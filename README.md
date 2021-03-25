@@ -95,19 +95,9 @@ let s = OrderedSet(retainingLastOccurencesIn: arr)
 When working with an `OrderedSet`, you may need to cast it back to an `Array` or `Set` when working with an API.
 `OrderedSet` provides access to it's internal storage via these properties:
 
-```swift
-let s = OrderedSet(["Chris", "Bob", "Alice"])
-
-let arr = s.array
-// ---> Array(["Chris", "Bob", "Alice"])
-
-let arr = s.contiguousArray
-// ---> ContiguousArray(["Chris", "Bob", "Alice"])
-
-let t = s.unorderedSet
-// ---> Set("Chris", "Bob", "Alice")
-```
-
+* `.array`
+* `.contiguousArray`
+* `.unorderedSet`
 
 ### Functions
 
