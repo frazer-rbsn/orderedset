@@ -181,9 +181,9 @@ Equality is determined in the same way as an array.
 ```swift
 let array = [1,2,3,4,5]
 let array2 = [1,3,2,4,5]
-let set = OrderedSet(array)
-let set2 = OrderedSet(array2)
-let isEqual = set == set2
+let s1 = OrderedSet(array)
+let s2 = OrderedSet(array2)
+let isEqual = s1 == s2
 // ---> false
 ```
 
