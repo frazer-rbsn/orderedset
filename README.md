@@ -1,5 +1,5 @@
 # OrderedSet
-An immutable, performant replacement for `Array` in Swift.
+A static, performant replacement for `Array` in Swift.
 
 [![Swift](https://github.com/frazer-rbsn/OrderedSet/actions/workflows/swift.yml/badge.svg)](https://github.com/frazer-rbsn/OrderedSet/actions/workflows/swift.yml)
 
