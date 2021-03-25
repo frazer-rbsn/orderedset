@@ -9,10 +9,10 @@ A static, performant replacement for `Array` in Swift.
 
 In short, an `OrderedSet` is like an `Array`, but accessing it yields the performance benefits of a `Set`. 
 If a sequence's member type conforms to `Hashable`, such as `Int`, `String`, `Double` etc., or your own type, 
-and you do not need to perform in-place modification, then you can use `OrderedSet` as a drop-in replacement. 
+and you do not need to perform in-place modification of the collection, then you can use `OrderedSet` as a drop-in replacement. 
 It can give you significant performance boosts when working with large collections. 
 
-It is one small & lightweight struct, implemented in pure Swift with no Objective-C constructs. 
+`OrderedSet` is implemented in a small & lightweight struct, implemented in pure Swift with no Objective-C constructs. 
 It is similar to `NSOrderedSet` from Objective-C Foundation.
 
 `OrderedSet` is a *static set*, i.e. once initialised, it cannot be mutated.
