@@ -1,0 +1,9 @@
+disabled_rules:
+- comma
+- file_length
+- identifier_name
+- redundant_discardable_let
+- type_body_length
+- vertical_whitespace
+
+line_length: 140
