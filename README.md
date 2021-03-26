@@ -81,11 +81,11 @@ let s = OrderedSet(arr)
 // ---> OrderedSet(["Chris", "Bob", "Alice"])
 ```
 
-If you wish to retain the *last* occurrence of an element, use the `retainingLastOccurencesIn` initialiser:
+If you wish to retain the *last* occurrence of an element, use the `retainingLastOccurrencesIn` initialiser:
 
 ```swift
 let arr = ["Chris", "Bob", "Chris", "Alice"]
-let s = OrderedSet(retainingLastOccurencesIn: arr)
+let s = OrderedSet(retainingLastOccurrencesIn: arr)
 // ---> OrderedSet(["Bob", "Chris", "Alice"])
 ```
 
@@ -103,7 +103,6 @@ When working with an `OrderedSet`, you may need to cast it back to an `Array` or
 
 `OrderedSet` implements many of the common collection functions, such as `compactMap(:_)`, `filter(:_)` 
 and `shuffled(:_)`. These will return a new `OrderedSet` instead of an array where possible. 
-`OrderedSet` is static -- it has no operations that can modify the collection.
 
 ```swift
 let s = OrderedSet(["john", "sally", "bob", "alice"])
@@ -111,7 +110,8 @@ let t = s.map { $0.capitalized }
 // ---> OrderedSet(["John", "Sally", "Bob", "Alice"])
 ```
 
-For convenience, `OrderedSet` has a few non-standard functions, such as `removingAll(:_)` 
+Because `OrderedSet` is static -- it has no operations that can modify the collection --  
+it provides a few non-standard functions, such as `removingAll(:_)` 
 which gives the inverse of an equivalent call to `filter(:_)`, and `appending(:_)`, 
 which returns a new `OrderedSet` with the given element appended to the end.
 
