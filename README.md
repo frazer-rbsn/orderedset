@@ -1,5 +1,5 @@
 # OrderedSet
-A static, performant replacement for `Array` in Swift.
+A static, ordered collection of unique objects.
 
 [![Swift](https://github.com/frazer-rbsn/OrderedSet/actions/workflows/swift.yml/badge.svg)](https://github.com/frazer-rbsn/OrderedSet/actions/workflows/swift.yml)
 
@@ -7,15 +7,21 @@ A static, performant replacement for `Array` in Swift.
 
 ## About
 
-In short, an `OrderedSet` is like an `Array`, but accessing it yields the performance benefits of a `Set`. 
-If a sequence's member type conforms to `Hashable`, such as `Int`, `String`, `Double` etc., or your own type, 
-and you do not need to perform in-place modification of the collection, then you can use `OrderedSet` as a drop-in replacement. 
-It can give you significant performance boosts when working with large collections. 
+In short, an `OrderedSet` is a hybrid of an `Array` and a `Set`. Like an `Array`, it's elements have
+a defined order, but it enforces uniqueness on it's member's like a `Set`. 
 
-`OrderedSet` is implemented in a small & lightweight struct, implemented in pure Swift with no Objective-C constructs. 
-It is similar to `NSOrderedSet` from Objective-C Foundation.
+You can use `OrderedSet` as a drop-in replacement for an `Array` if:
+ * the element type conforms to `Hashable` (e.g. `Int`, `String`, `Double` etc., or your own type),
+ * you do not need to perform in-place modification of the collection,
+ * and all elements should occur only once.
 
-`OrderedSet` is a *static set*, i.e. once initialised, it cannot be mutated.
+It can give you significant performance boosts when working with large collections, over using an `Array`.
+
+You can use `OrderedSet` as a drop-in replacement for an `Set` if:
+ * you require the members of the set to have a defined order.
+
+`OrderedSet` is implemented in pure Swift with no Objective-C constructs. 
+`OrderedSet` is a *static set*, i.e. once initialised, it cannot be mutated. It is similar to `NSOrderedSet` from Objective-C Foundation.
 
 
 ## Installation
