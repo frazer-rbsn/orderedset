@@ -17,7 +17,7 @@ You can use `OrderedSet` as a drop-in replacement for an `Array` if:
 
 It can give you significant performance boosts when working with large collections, over using an `Array`.
 
-You can use `OrderedSet` as a drop-in replacement for an `Set` if:
+You can use `OrderedSet` as a drop-in replacement for a `Set` if:
  * you do not need to perform in-place modification of the set,
  * and you require the members of the set to have a defined order.
 
