@@ -134,7 +134,7 @@ public struct OrderedSet<E: Hashable> {
   public var unorderedSet: Set<Element> { _set }
 
 
-  // MARK: - Metadata functions
+  // MARK: - Metadata Functions
 
   /// Returns `true` if this ordered set contains `element`.
   /// - complexity: O(1)
@@ -207,6 +207,8 @@ public struct OrderedSet<E: Hashable> {
 
   // MARK: - Creation functions
 
+  // MARK: Adding Elements
+
   /// Returns a new ordered set with `element` inserted at the end.
   /// This function returns an equivalent ordered set if `element` is
   /// already a member.
@@ -240,85 +242,7 @@ public struct OrderedSet<E: Hashable> {
     self + otherSet
   }
 
-  /// Returns a new ordered set containing the elements of this ordered set that do not occur in the given sequence.
-  /// Retains the relative order of the elements in this ordered set.
-  public func subtracting<S>(_ sequence: S) -> Self where Element == S.Element, S: Sequence {
-    Self(_array.filter { !sequence.contains($0) })
-  }
-
-  /// Returns a new ordered set containing the elements of this ordered set that do not occur in the given set.
-  /// - parameter retainOrder: The returned ordered set retains the relative order of the elements. Defaults to `true`.
-  /// If retaining the order is not necessary, passing in `false` may yield a performance benefit.
-  public func subtracting(_ set: Set<Element>, retainOrder: Bool = true) -> Self {
-    if retainOrder {
-      return Self(_array.filter { !set.contains($0) })
-    } else {
-      return Self(_set.subtracting(set))
-    }
-  }
-
-  /// Returns a new ordered set with the elements sorted by the given predicate.
-  public func sorted(by areInIncreasingOrder: (Element, Element) throws -> Bool) rethrows -> Self {
-    Self(array: try _array.sorted(by: areInIncreasingOrder), set: _set)
-  }
-
-  /// Returns a new ordered set with the elements filtered by the given predicate.
-  /// - parameter retainOrder: The returned ordered set retains the relative order of the elements. Defaults to `true`.
-  /// If retaining the order is not necessary, passing in `false` may yield a performance benefit.
-  public func filter(_ isIncluded: (Element) throws -> Bool, retainOrder: Bool = true) rethrows -> Self {
-    if retainOrder {
-      return Self(try _array.filter(isIncluded))
-    } else {
-      return Self(try _set.filter(isIncluded))
-    }
-  }
-
-  /// Returns a new ordered set with the results of mapping the given closure over the ordered set's elements.
-  /// - parameter retainOrder: The returned ordered set retains the relative order of the elements. Defaults to `true`.
-  /// If retaining the order is not necessary, passing in `false` may yield a performance benefit.
-  /// - note: To return a new ordered set instead of an array, the given closure must return a type that conforms to `Hashable`.
-  public func map<T>(_ transform: (Element) throws -> T, retainOrder: Bool = true) rethrows -> OrderedSet<T> where T: Hashable {
-    if retainOrder {
-      return OrderedSet<T>(try _array.map(transform))
-    } else {
-      return OrderedSet<T>(try _set.map(transform))
-    }
-  }
-
-  /// Returns a new ordered set with the non-nil results of mapping the given closure over the ordered set's elements.
-  /// - parameter retainOrder: The returned ordered set retains the relative order of the elements. Defaults to `true`.
-  /// If retaining the order is not necessary, passing in `false` may yield a performance benefit.
-  /// - note: To return a new ordered set instead of an array, the given closure must return a type that conforms to `Hashable`.
-  public func compactMap<T>(_ transform: (Element) throws -> T?, retainOrder: Bool = true) rethrows -> OrderedSet<T> where T: Hashable {
-    if retainOrder {
-      return OrderedSet<T>(try _array.compactMap(transform))
-    } else {
-      return OrderedSet<T>(try _set.compactMap(transform))
-    }
-  }
-
-  /// Returns a new ordered set with the elements at indices `i` and `j` swapped.
-  /// Both parameters must be valid indices of the collection that are not equal to `endIndex`.
-  public func swappingAt(_ i: Int, _ j: Int) -> Self {
-    var array = _array
-    var dict = _elementIndexDict
-    let elementAtI = array[i]
-    let elementAtJ = array[j]
-    array.swapAt(i, j)
-    dict[elementAtI.hashValue] = j
-    dict[elementAtJ.hashValue] = i
-    return Self(array: array, set: _set, elementIndexDict: dict)
-  }
-
-  /// Returns a new ordered set with the elements shuffled.
-  public func shuffled() -> Self {
-    Self(array: _set.shuffled(), set: _set)
-  }
-
-  /// Returns a new ordered set with the elements shuffled using the given generator as a source for randomness.
-  public func shuffled<T>(using generator: inout T) -> Self where T: RandomNumberGenerator {
-    Self(array: _set.shuffled(using: &generator), set: _set)
-  }
+  // MARK: Removing Elements
 
   /// Returns a new ordered set with the first element removed.
   public func removingFirst() -> Self {
@@ -348,6 +272,90 @@ public struct OrderedSet<E: Hashable> {
     var arr = _array
     try arr.removeAll(where: shouldBeRemoved)
     return Self(arr)
+  }
+
+  /// Returns a new ordered set with the elements filtered by the given predicate.
+  /// - parameter retainOrder: The returned ordered set retains the relative order of the elements. Defaults to `true`.
+  /// If retaining the order is not necessary, passing in `false` may yield a performance benefit.
+  public func filter(_ isIncluded: (Element) throws -> Bool, retainOrder: Bool = true) rethrows -> Self {
+    if retainOrder {
+      return Self(try _array.filter(isIncluded))
+    } else {
+      return Self(try _set.filter(isIncluded))
+    }
+  }
+
+  /// Returns a new ordered set containing the elements of this ordered set that do not occur in the given sequence.
+  /// Retains the relative order of the elements in this ordered set.
+  public func subtracting<S>(_ sequence: S) -> Self where Element == S.Element, S: Sequence {
+    Self(_array.filter { !sequence.contains($0) })
+  }
+
+  /// Returns a new ordered set containing the elements of this ordered set that do not occur in the given set.
+  /// - parameter retainOrder: The returned ordered set retains the relative order of the elements. Defaults to `true`.
+  /// If retaining the order is not necessary, passing in `false` may yield a performance benefit.
+  public func subtracting(_ set: Set<Element>, retainOrder: Bool = true) -> Self {
+    if retainOrder {
+      return Self(_array.filter { !set.contains($0) })
+    } else {
+      return Self(_set.subtracting(set))
+    }
+  }
+
+  // MARK: Reordering Elements
+
+  /// Returns a new ordered set with the elements sorted by the given predicate.
+  public func sorted(by areInIncreasingOrder: (Element, Element) throws -> Bool) rethrows -> Self {
+    Self(array: try _array.sorted(by: areInIncreasingOrder), set: _set)
+  }
+
+  /// Returns a new ordered set with the elements at indices `i` and `j` swapped.
+  /// Both parameters must be valid indices of the collection that are not equal to `endIndex`.
+  public func swappingAt(_ i: Int, _ j: Int) -> Self {
+    var array = _array
+    var dict = _elementIndexDict
+    let elementAtI = array[i]
+    let elementAtJ = array[j]
+    array.swapAt(i, j)
+    dict[elementAtI.hashValue] = j
+    dict[elementAtJ.hashValue] = i
+    return Self(array: array, set: _set, elementIndexDict: dict)
+  }
+
+  /// Returns a new ordered set with the elements shuffled.
+  public func shuffled() -> Self {
+    Self(array: _set.shuffled(), set: _set)
+  }
+
+  /// Returns a new ordered set with the elements shuffled using the given generator as a source for randomness.
+  public func shuffled<T>(using generator: inout T) -> Self where T: RandomNumberGenerator {
+    Self(array: _set.shuffled(using: &generator), set: _set)
+  }
+
+  // MARK: Transforming Elements
+
+  /// Returns a new ordered set with the results of mapping the given closure over the ordered set's elements.
+  /// - parameter retainOrder: The returned ordered set retains the relative order of the elements. Defaults to `true`.
+  /// If retaining the order is not necessary, passing in `false` may yield a performance benefit.
+  /// - note: To return a new ordered set instead of an array, the given closure must return a type that conforms to `Hashable`.
+  public func map<T>(_ transform: (Element) throws -> T, retainOrder: Bool = true) rethrows -> OrderedSet<T> where T: Hashable {
+    if retainOrder {
+      return OrderedSet<T>(try _array.map(transform))
+    } else {
+      return OrderedSet<T>(try _set.map(transform))
+    }
+  }
+
+  /// Returns a new ordered set with the non-nil results of mapping the given closure over the ordered set's elements.
+  /// - parameter retainOrder: The returned ordered set retains the relative order of the elements. Defaults to `true`.
+  /// If retaining the order is not necessary, passing in `false` may yield a performance benefit.
+  /// - note: To return a new ordered set instead of an array, the given closure must return a type that conforms to `Hashable`.
+  public func compactMap<T>(_ transform: (Element) throws -> T?, retainOrder: Bool = true) rethrows -> OrderedSet<T> where T: Hashable {
+    if retainOrder {
+      return OrderedSet<T>(try _array.compactMap(transform))
+    } else {
+      return OrderedSet<T>(try _set.compactMap(transform))
+    }
   }
 
 
