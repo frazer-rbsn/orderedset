@@ -501,7 +501,7 @@ final class OrderedSetTests: XCTestCase {
 
   func testMeasureContainsSmall() {
     measure {
-      _ = Self.smallMeasureSet.contains(99999)
+      _ = Self.smallMeasureSet.contains(9)
     }
   }
 
@@ -513,25 +513,13 @@ final class OrderedSetTests: XCTestCase {
 
   func testMeasureIndexOfSmall() {
     measure {
-      _ = Self.smallMeasureSet.index(of: 99999)
+      _ = Self.smallMeasureSet.index(of: 9)
     }
   }
 
   func testMeasureIndexOfLarge() {
     measure {
       _ = Self.largeMeasureSet.index(of: 99999)
-    }
-  }
-
-  func testMeasureCountSmall() {
-    measure {
-      _ = Self.smallMeasureSet.count
-    }
-  }
-
-  func testMeasureCountLarge() {
-    measure {
-      _ = Self.largeMeasureSet.count
     }
   }
 
@@ -604,18 +592,6 @@ final class OrderedSetTests: XCTestCase {
   func testMeasureRemovingLarge() {
     measure {
       _ = Self.largeMeasureSet.removing(at: 6666)
-    }
-  }
-
-  func testMeasureShuffledSmall() {
-    measure {
-      _ = Self.smallMeasureSet.shuffled()
-    }
-  }
-
-  func testMeasureShuffledLarge() {
-    measure {
-      _ = Self.largeMeasureSet.shuffled()
     }
   }
 
