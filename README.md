@@ -81,7 +81,7 @@ let s = OrderedSet(arr)
 // ---> OrderedSet(["Chris", "Bob", "Alice"])
 ```
 
-If you wish to retain the *last* occurance of an element, use the `retainingLastOccurencesIn` initialiser:
+If you wish to retain the *last* occurrence of an element, use the `retainingLastOccurencesIn` initialiser:
 
 ```swift
 let arr = ["Chris", "Bob", "Chris", "Alice"]
@@ -115,7 +115,7 @@ For convenience, `OrderedSet` has a few non-standard functions, such as `removin
 which gives the inverse of an equivalent call to `filter(:_)`, and `appending(:_)`, 
 which returns a new `OrderedSet` with the given element appended to the end.
 
-Standard set algebra functions are available, and can be used with both other `Orderedset` instances 
+Standard set algebra functions are available, and can be used with both other `OrderedSet` instances 
 and standard `Set` collections.
 
 ```swift
