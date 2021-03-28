@@ -205,7 +205,7 @@ public struct OrderedSet<E: Hashable> {
   }
 
 
-  // MARK: - Creation functions
+  // MARK: - Creation Functions
 
   // MARK: Adding Elements
 
@@ -311,7 +311,7 @@ public struct OrderedSet<E: Hashable> {
 
   /// Returns a new ordered set with the elements at indices `i` and `j` swapped.
   /// Both parameters must be valid indices of the collection that are not equal to `endIndex`.
-  public func swappingAt(_ i: Int, _ j: Int) -> Self {
+  public func swappingAt(_ i: Index, _ j: Index) -> Self {
     var array = _array
     var dict = _elementIndexDict
     let elementAtI = array[i]
@@ -362,13 +362,13 @@ public struct OrderedSet<E: Hashable> {
   // MARK: - Subscripts
 
   /// Returns the element at `index`, or `nil` if this index is out of bounds.
-  public subscript(safe index: Int) -> Element? {
+  public subscript(safe index: Index) -> Element? {
     guard indices.contains(index) else { return nil }
     return _array[index]
   }
 
 
-  // MARK: - Internal funcs
+  // MARK: - Internal Functions
 
   func sanityCheck() -> Bool {
     return _array.count == _set.count
@@ -393,11 +393,11 @@ extension OrderedSet: ExpressibleByArrayLiteral {
 
 extension OrderedSet: RandomAccessCollection {
 
-  public var startIndex: Int { 0 }
+  public var startIndex: Index { 0 }
 
-  public var endIndex: Int { _array.endIndex }
+  public var endIndex: Index { _array.endIndex }
 
-  public subscript(index: Int) -> Element { _array[index] }
+  public subscript(index: Index) -> Element { _array[index] }
 }
 
 extension OrderedSet: Hashable {}
