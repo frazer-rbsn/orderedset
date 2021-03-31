@@ -384,6 +384,17 @@ public struct OrderedSet<E: Hashable> {
 
 // MARK: - Extensions
 
+extension OrderedSet {
+
+  static public func + (lhs: Self, rhs: Self) -> Self {
+    Self(lhs._array + rhs._array)
+  }
+
+  static public func + <S>(lhs: Self, rhs: S) -> Self where Element == S.Element, S: Sequence {
+    Self(lhs._array + rhs)
+  }
+}
+
 extension OrderedSet: ExpressibleByArrayLiteral {
 
   public init(arrayLiteral elements: Element...) {
@@ -406,17 +417,6 @@ extension OrderedSet: Equatable {
 
   static public func == <E>(lhs: OrderedSet<E>, rhs: OrderedSet<E>) -> Bool {
     lhs._array == rhs._array
-  }
-}
-
-extension OrderedSet {
-
-  static public func + (lhs: Self, rhs: Self) -> Self {
-    Self(lhs._array + rhs._array)
-  }
-
-  static public func + <S>(lhs: Self, rhs: S) -> Self where Element == S.Element, S: Sequence {
-    Self(lhs._array + rhs)
   }
 }
 
