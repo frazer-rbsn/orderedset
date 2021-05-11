@@ -10,6 +10,7 @@ public struct OrderedSet<E: Hashable> {
 
 
   // MARK: - Internal Storage
+
   private typealias HashValue = Int
   private typealias HashIndexDict = [HashValue: Index]
 
