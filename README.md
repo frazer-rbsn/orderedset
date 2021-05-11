@@ -88,11 +88,11 @@ let s = OrderedSet(arr)
 // ---> OrderedSet(["Chris", "Bob", "Alice"])
 ```
 
-If you wish to retain the *last* occurrence of an element, use the `retainingLastOccurrencesIn` initialiser:
+If you wish to retain the *last* occurrence of an element, use the `retainLastOccurrences` parameter and set it to `true`:
 
 ```swift
 let arr = ["Chris", "Bob", "Chris", "Alice"]
-let s = OrderedSet(retainingLastOccurrencesIn: arr)
+let s = OrderedSet(arr, retainLastOccurrences: true)
 // ---> OrderedSet(["Bob", "Chris", "Alice"])
 ```
 
