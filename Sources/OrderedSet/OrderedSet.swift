@@ -5,16 +5,18 @@
  */
 public struct OrderedSet<E: Hashable> {
 
+  // MARK: - Typealiases
+
   public typealias Element = E
   public typealias Index = Int
-
-
-  // MARK: - Internal Storage
 
   private typealias HashValue = Int
   private typealias HashIndexDict = [HashValue: Index]
 
-  fileprivate let _array: ContiguousArray<Element>
+
+  // MARK: - Internal Storage
+
+  private let _array: ContiguousArray<Element>
   private let _set: Set<Element>
   private let _hashIndexDict: HashIndexDict
 
