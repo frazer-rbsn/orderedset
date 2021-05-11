@@ -31,7 +31,7 @@ Swift Package Manager:
 
 ```swift
 dependencies: [
-  .package(url: "https://github.com/frazer-rbsn/OrderedSet.git", from: "1.0.0"),
+  .package(url: "https://github.com/frazer-rbsn/OrderedSet.git", from: "1.1.0"),
 ],
 ```
 
