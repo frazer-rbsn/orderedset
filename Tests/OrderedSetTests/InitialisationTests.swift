@@ -21,7 +21,7 @@ final class InitialisationTests: XCTestCase {
 
   func testInitArrayRetainLastOccurrences() {
     let array = Array([1,2,3,4,5,4,2])
-    let set = OrderedSet(retainingLastOccurrencesIn: array)
+    let set = OrderedSet(array, retainLastOccurences: true)
     XCTAssertEqual(set.count, 5)
     XCTAssertEqual(set.array, [1,3,5,4,2])
     XCTAssert(set.sanityCheck())

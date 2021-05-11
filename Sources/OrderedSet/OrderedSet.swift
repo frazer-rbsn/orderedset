@@ -10,12 +10,12 @@ public struct OrderedSet<E: Hashable> {
 
 
   // MARK: - Internal Storage
-
-  private typealias ElementIndexDict = [Int: Index]
+  private typealias HashValue = Int
+  private typealias HashIndexDict = [HashValue: Index]
 
   fileprivate let _array: ContiguousArray<Element>
   private let _set: Set<Element>
-  private let _elementIndexDict: ElementIndexDict
+  private let _hashIndexDict: HashIndexDict
 
 
   // MARK: - Public Stored Properties
@@ -30,12 +30,46 @@ public struct OrderedSet<E: Hashable> {
   // MARK: - Public Initialisers
 
   /// Creates an ordered set with the contents of `sequence`.
-  /// If an element occurs more than once in `sequence`, only the first instance
+  /// - parameter retainLastOccurences: If set to `true`, if an element occurs more than once in `sequence`, only the last instance
   /// will be included.
-  public init<S>(_ sequence: S) where Element == S.Element, S: Sequence {
+  public init<S>(_ sequence: S, retainLastOccurences: Bool = false) where Element == S.Element, S: Sequence {
+    if retainLastOccurences {
+      self.init(retainingLastOccurrencesIn: sequence)
+    } else {
+      self.init(retainingFirstOccurrencesIn: sequence)
+    }
+  }
+
+  /// Creates an ordered set with the contents of `set`, ordered by the given predicate.
+  public init(_ set: Set<Element>, sortedBy areInIncreasingOrder: (Element, Element) throws -> Bool) rethrows {
+    let sortedArray = try set.sorted(by: areInIncreasingOrder)
+    self.init(array: ContiguousArray(sortedArray),
+              set: set,
+              hashIndexDict: Self.hashIndexDict(from: sortedArray))
+  }
+
+  /// Creates an ordered set with the contents of `set`, sorted according to the member type's conformance to `Comparable`.
+  public init(_ set: Set<Element>) where Element: Comparable {
+    let sortedArray = set.sorted()
+    self.init(array: ContiguousArray(sortedArray),
+              set: set,
+              hashIndexDict: Self.hashIndexDict(from: sortedArray))
+  }
+
+  /// Creates an empty ordered set.
+  public init() {
+    self.init(array: [],
+              set: [],
+              hashIndexDict: [:])
+  }
+
+
+  // MARK: - Private Initialisers
+
+  private init<S>(retainingFirstOccurrencesIn sequence: S) where Element == S.Element, S: Sequence {
     var array = ContiguousArray<Element>()
     var set = Set<Element>()
-    var indexDict = ElementIndexDict()
+    var indexDict = HashIndexDict()
     for element in sequence {
       let inserted = set.insert(element).inserted
       guard inserted else { continue }
@@ -44,13 +78,10 @@ public struct OrderedSet<E: Hashable> {
     }
     self.init(array: array,
               set: set,
-              elementIndexDict: indexDict)
+              hashIndexDict: indexDict)
   }
 
-  /// Creates an ordered set with the contents of `sequence`.
-  /// If an element occurs more than once in `sequence`, only the last instance
-  /// will be included.
-  public init<S>(retainingLastOccurrencesIn sequence: S) where Element == S.Element, S: Sequence {
+  private init<S>(retainingLastOccurrencesIn sequence: S) where Element == S.Element, S: Sequence {
     var array = ContiguousArray<Element>()
     var set = Set<Element>()
     for element in sequence {
@@ -65,54 +96,28 @@ public struct OrderedSet<E: Hashable> {
               set: set)
   }
 
-  /// Creates an ordered set with the contents of `set`, ordered by the given predicate.
-  public init(_ set: Set<Element>, sortedBy areInIncreasingOrder: (Element, Element) throws -> Bool) rethrows {
-    let sortedArray = try set.sorted(by: areInIncreasingOrder)
-    self.init(array: ContiguousArray(sortedArray),
-              set: set,
-              elementIndexDict: Self.elementIndexDict(from: sortedArray))
-  }
-
-  /// Creates an ordered set with the contents of `set`, sorted according to the member type's conformance to `Comparable`.
-  public init(_ set: Set<Element>) where Element: Comparable {
-    let sortedArray = set.sorted()
-    self.init(array: ContiguousArray(sortedArray),
-              set: set,
-              elementIndexDict: Self.elementIndexDict(from: sortedArray))
-  }
-
-  /// Creates an empty ordered set.
-  public init() {
-    self.init(array: [],
-              set: [],
-              elementIndexDict: [:])
-  }
-
-
-  // MARK: - Private Initialisers
-
   private init(array: ContiguousArray<Element>, set: Set<Element>) {
     self.init(array: array,
               set: set,
-              elementIndexDict: Self.elementIndexDict(from: array))
+              hashIndexDict: Self.hashIndexDict(from: array))
   }
 
   private init(array: [Element], set: Set<Element>) {
     self.init(array: ContiguousArray(array),
               set: set,
-              elementIndexDict: Self.elementIndexDict(from: array))
+              hashIndexDict: Self.hashIndexDict(from: array))
   }
 
-  private init(array: ContiguousArray<Element>, set: Set<Element>, elementIndexDict: ElementIndexDict) {
+  private init(array: ContiguousArray<Element>, set: Set<Element>, hashIndexDict: HashIndexDict) {
     self._array = array
     self._set = set
-    self._elementIndexDict = elementIndexDict
+    self._hashIndexDict = hashIndexDict
     self.count = array.count
     self.isEmpty = array.isEmpty
   }
 
-  private static func elementIndexDict<S>(from sequence: S) -> ElementIndexDict where Element == S.Element, S: Sequence {
-    var indexDict = ElementIndexDict()
+  private static func hashIndexDict<S>(from sequence: S) -> HashIndexDict where Element == S.Element, S: Sequence {
+    var indexDict = HashIndexDict()
     for (index, element) in sequence.enumerated() {
       indexDict[element.hashValue] = index
     }
@@ -145,7 +150,7 @@ public struct OrderedSet<E: Hashable> {
   /// Returns the index of `element`, or `nil` if it is not a member of this ordered set.
   /// - complexity: O(1)
   public func index(of element: Element) -> Index? {
-    _elementIndexDict[element.hashValue]
+    _hashIndexDict[element.hashValue]
   }
 
   // Overrides method from `Collection`
@@ -216,11 +221,11 @@ public struct OrderedSet<E: Hashable> {
     var set = _set
     let inserted = set.insert(element).inserted
     guard inserted else { return self }
-    var dict = _elementIndexDict
+    var dict = _hashIndexDict
     dict[element.hashValue] = endIndex
     var array = _array
     array.append(element)
-    return Self(array: array, set: set, elementIndexDict: dict)
+    return Self(array: array, set: set, hashIndexDict: dict)
   }
 
   /// Returns a new ordered set with `element` inserted at `index`.
@@ -313,13 +318,13 @@ public struct OrderedSet<E: Hashable> {
   /// Both parameters must be valid indices of the collection that are not equal to `endIndex`.
   public func swappingAt(_ i: Index, _ j: Index) -> Self {
     var array = _array
-    var dict = _elementIndexDict
+    var dict = _hashIndexDict
     let elementAtI = array[i]
     let elementAtJ = array[j]
     array.swapAt(i, j)
     dict[elementAtI.hashValue] = j
     dict[elementAtJ.hashValue] = i
-    return Self(array: array, set: _set, elementIndexDict: dict)
+    return Self(array: array, set: _set, hashIndexDict: dict)
   }
 
   /// Returns a new ordered set with the elements shuffled.
@@ -372,9 +377,9 @@ public struct OrderedSet<E: Hashable> {
 
   func sanityCheck() -> Bool {
     return _array.count == _set.count
-      && _set.count == _elementIndexDict.count
+      && _set.count == _hashIndexDict.count
       && endIndex == _array.count
-      && _elementIndexDict.count == Set(_elementIndexDict.values).count // Check for duplicate indices
+      && _hashIndexDict.count == Set(_hashIndexDict.values).count // Check for duplicate indices
       && _set == Set(_array) // Check set and array match
   }
 }
