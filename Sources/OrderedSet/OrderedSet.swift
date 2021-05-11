@@ -31,7 +31,7 @@ public struct OrderedSet<E: Hashable> {
 
   /// Creates an ordered set with the contents of `sequence`.
   /// - parameter retainLastOccurences: If set to `true`, if an element occurs more than once in `sequence`, only the last instance
-  /// will be included.
+  /// will be included. Default value is `false`.
   public init<S>(_ sequence: S, retainLastOccurences: Bool = false) where Element == S.Element, S: Sequence {
     if retainLastOccurences {
       self.init(retainingLastOccurrencesIn: sequence)
