@@ -34,7 +34,7 @@ public struct OrderedSet<E: Hashable> {
 
   /// Creates an ordered set with the contents of `sequence`.
   /// - parameter retainLastOccurences: If set to `true`, if an element occurs more than once in `sequence`, only the last instance
-  /// will be included. Default value is `false`.
+  ///   will be included. Default value is `false`.
   public init<S>(_ sequence: S, retainLastOccurences: Bool = false) where Element == S.Element, S: Sequence {
     if retainLastOccurences {
       self.init(retainingLastOccurrencesIn: sequence)
@@ -253,6 +253,7 @@ public struct OrderedSet<E: Hashable> {
   // MARK: Removing Elements
 
   /// Returns a new ordered set with the first element removed.
+  /// The collection must not be empty.
   public func removingFirst() -> Self {
     var arr = _array
     arr.removeFirst()
@@ -260,6 +261,7 @@ public struct OrderedSet<E: Hashable> {
   }
 
   /// Returns a new ordered set with the last element removed.
+  /// The collection must not be empty.
   public func removingLast() -> Self {
     var arr = _array
     arr.removeLast()
@@ -268,7 +270,7 @@ public struct OrderedSet<E: Hashable> {
 
   /// Returns a new ordered set with the element at the specified position removed.
   /// - parameter position: The index of the member to remove.
-  /// `position` must be a valid index of the ordered set.
+  ///   `position` must be a valid index of the ordered set.
   public func removing(at position: Index) -> Self {
     var arr = _array
     arr.remove(at: position)
@@ -276,6 +278,9 @@ public struct OrderedSet<E: Hashable> {
   }
 
   /// Returns a new ordered set with the elements filtered by the given predicate.
+  /// - parameter shouldBeRemoved: A closure that takes an element of the
+  ///   sequence as its argument and returns a Boolean value indicating
+  ///   whether the element should be removed from the collection.
   public func removingAll(where shouldBeRemoved: (Element) throws -> Bool) rethrows -> Self {
     var arr = _array
     try arr.removeAll(where: shouldBeRemoved)
@@ -284,7 +289,7 @@ public struct OrderedSet<E: Hashable> {
 
   /// Returns a new ordered set with the elements filtered by the given predicate.
   /// - parameter retainOrder: The returned ordered set retains the relative order of the elements. Defaults to `true`.
-  /// If retaining the order is not necessary, passing in `false` may yield a performance benefit.
+  ///   If retaining the order is not necessary, passing in `false` may yield a performance benefit.
   public func filter(_ isIncluded: (Element) throws -> Bool, retainOrder: Bool = true) rethrows -> Self {
     if retainOrder {
       return Self(try _array.filter(isIncluded))
@@ -301,7 +306,7 @@ public struct OrderedSet<E: Hashable> {
 
   /// Returns a new ordered set containing the elements of this ordered set that do not occur in the given set.
   /// - parameter retainOrder: The returned ordered set retains the relative order of the elements. Defaults to `true`.
-  /// If retaining the order is not necessary, passing in `false` may yield a performance benefit.
+  ///   If retaining the order is not necessary, passing in `false` may yield a performance benefit.
   public func subtracting(_ set: Set<Element>, retainOrder: Bool = true) -> Self {
     if retainOrder {
       return Self(_array.filter { !set.contains($0) })
@@ -313,6 +318,12 @@ public struct OrderedSet<E: Hashable> {
   // MARK: Reordering Elements
 
   /// Returns a new ordered set with the elements sorted by the given predicate.
+  /// - parameter areInIncreasingOrder: A predicate that returns `true` if its
+  ///   first argument should be ordered before its second argument;
+  ///   otherwise, `false`. If `areInIncreasingOrder` throws an error during
+  ///   the sort, the elements may be in a different order, but none will be
+  ///   lost.
+  /// - note: Documentation based on `Swift.Sequence.sorted(by:)`
   public func sorted(by areInIncreasingOrder: (Element, Element) throws -> Bool) rethrows -> Self {
     Self(array: try _array.sorted(by: areInIncreasingOrder), set: _set)
   }
@@ -330,12 +341,42 @@ public struct OrderedSet<E: Hashable> {
     return Self(array: array, set: _set, hashIndexDict: dict)
   }
 
-  /// Returns a new ordered set with the elements shuffled.
+  /// Returns a new ordered set with the order of the elements shuffled.
+  ///
+  /// For example, you can shuffle the numbers between `0` and `9` by calling
+  /// the `shuffled()` method on that range:
+  ///
+  ///     let numbers = OrderedSet(0...9)
+  ///     let shuffledNumbers = numbers.shuffled()
+  ///     // shuffledNumbers == OrderedSet([1, 7, 6, 2, 8, 9, 4, 3, 5, 0])
+  ///
+  /// This method is equivalent to calling `shuffled(using:)`, passing in the
+  /// system's default random generator.
+  /// - note: Documentation based on `Swift.Sequence.shuffled(using:_)`
   public func shuffled() -> Self {
     Self(array: _set.shuffled(), set: _set)
   }
 
-  /// Returns a new ordered set with the elements shuffled using the given generator as a source for randomness.
+  /// Returns a new ordered set, with the order of the elements shuffled using the given generator
+  /// as a source for randomness.
+  ///
+  /// You use this method to randomize the elements of a sequence when you are
+  /// using a custom random number generator. For example, you can shuffle the
+  /// numbers between `0` and `9` by calling the `shuffled(using:)` method on
+  /// that range:
+  ///
+  ///     let numbers = OrderedSet(0...9)
+  ///     let shuffledNumbers = numbers.shuffled(using: &myGenerator)
+  ///     // shuffledNumbers == OrderedSet([8, 9, 4, 3, 2, 6, 7, 0, 5, 1])
+  ///
+  /// - parameter generator: The random number generator to use when shuffling
+  ///   the sequence.
+  /// - note: The algorithm used to shuffle a sequence may change in a future
+  ///   version of Swift. If you're passing a generator that results in the
+  ///   same shuffled order each time you run your program, that sequence may
+  ///   change when your program is compiled using a different version of
+  ///   Swift.
+  /// - note: Documentation based on `Swift.Sequence.shuffled(using:_)`
   public func shuffled<T>(using generator: inout T) -> Self where T: RandomNumberGenerator {
     Self(array: _set.shuffled(using: &generator), set: _set)
   }
@@ -343,9 +384,13 @@ public struct OrderedSet<E: Hashable> {
   // MARK: Transforming Elements
 
   /// Returns a new ordered set with the results of mapping the given closure over the ordered set's elements.
+  /// - parameter transform: A mapping closure. `transform` accepts an
+  ///   element of this ordered set as its parameter and returns a transformed
+  ///   value of the same or of a different type.
   /// - parameter retainOrder: The returned ordered set retains the relative order of the elements. Defaults to `true`.
-  /// If retaining the order is not necessary, passing in `false` may yield a performance benefit.
+  ///   If retaining the order is not necessary, passing in `false` may yield a performance benefit.
   /// - note: To return a new ordered set instead of an array, the given closure must return a type that conforms to `Hashable`.
+  /// - note: Documentation based on `Swift.Collection.map(_:)`
   public func map<T>(_ transform: (Element) throws -> T, retainOrder: Bool = true) rethrows -> OrderedSet<T> where T: Hashable {
     if retainOrder {
       return OrderedSet<T>(try _array.map(transform))
@@ -355,9 +400,13 @@ public struct OrderedSet<E: Hashable> {
   }
 
   /// Returns a new ordered set with the non-nil results of mapping the given closure over the ordered set's elements.
+  /// - parameter transform: A mapping closure. `transform` accepts an
+  ///   element of this ordered set as its parameter and returns a transformed
+  ///   value of the same or of a different type.
   /// - parameter retainOrder: The returned ordered set retains the relative order of the elements. Defaults to `true`.
-  /// If retaining the order is not necessary, passing in `false` may yield a performance benefit.
+  ///   If retaining the order is not necessary, passing in `false` may yield a performance benefit.
   /// - note: To return a new ordered set instead of an array, the given closure must return a type that conforms to `Hashable`.
+  /// - note: Documentation based on `Swift.Collection.compactMap(_:)`
   public func compactMap<T>(_ transform: (Element) throws -> T?, retainOrder: Bool = true) rethrows -> OrderedSet<T> where T: Hashable {
     if retainOrder {
       return OrderedSet<T>(try _array.compactMap(transform))
