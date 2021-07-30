@@ -277,6 +277,17 @@ public struct OrderedSet<E: Hashable> {
     return Self(arr)
   }
 
+  /// Returns a new ordered set with the member element removed.
+  /// This function returns an equivalent ordered set if `element` is not a
+  /// member.
+  /// - parameter element: The member to remove.
+  public func removing(element: Element) -> Self {
+    guard let index = self.index(of: element) else { return self }
+    var arr = _array
+    arr.remove(at: index)
+    return Self(arr)
+  }
+
   /// Returns a new ordered set with the elements filtered by the given predicate.
   /// - parameter shouldBeRemoved: A closure that takes an element of the
   ///   sequence as its argument and returns a Boolean value indicating

@@ -118,6 +118,14 @@ final class CreationFunctionTests: XCTestCase {
     XCTAssert(set.sanityCheck())
   }
 
+  func testRemovingElement() {
+    let array = [1,2,3,4,5]
+    let set = OrderedSet(array)
+    let removing = set.removing(element: 3)
+    XCTAssertEqual(removing, OrderedSet([1,2,4,5]))
+    XCTAssert(set.sanityCheck())
+  }
+
   func testRemovingAll() {
     let array = [1,2,3,4,5]
     let set = OrderedSet(array)
