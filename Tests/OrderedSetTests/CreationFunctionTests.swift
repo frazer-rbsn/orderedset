@@ -55,6 +55,14 @@ final class CreationFunctionTests: XCTestCase {
     XCTAssert(newSet.sanityCheck())
   }
 
+  func testMoving() {
+    let array = [1,2,3,4,5]
+    let set = OrderedSet(array)
+    let newSet = set.moving(fromOffsets: IndexSet([0]), toOffset: 3)
+    XCTAssertEqual(newSet, OrderedSet([2,3,1,4,5]))
+    XCTAssert(newSet.sanityCheck())
+  }
+
   func testFilter() {
     let array = [1,2,3,4,5]
     let set = OrderedSet(array)
