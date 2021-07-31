@@ -8,7 +8,7 @@ final class CreationFunctionTests: XCTestCase {
     let set = OrderedSet(array)
     let newSet = set.appending(6)
     XCTAssertEqual(newSet, OrderedSet([1,2,3,4,5,6]))
-    XCTAssert(set.sanityCheck())
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testInsertingAt() {
@@ -16,7 +16,7 @@ final class CreationFunctionTests: XCTestCase {
     let set = OrderedSet(array)
     let newSet = set.inserting(9, at: 3)
     XCTAssertEqual(newSet, OrderedSet([1,2,3,9,4,5]))
-    XCTAssert(set.sanityCheck())
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testUnion() {
@@ -24,9 +24,9 @@ final class CreationFunctionTests: XCTestCase {
     let arr2 = [3,4,5]
     let set1 = OrderedSet(arr1)
     let set2 = OrderedSet(arr2)
-    let set = set1.union(with: set2)
-    XCTAssertEqual(set, OrderedSet([1,2,3,4,5]))
-    XCTAssert(set.sanityCheck())
+    let newSet = set1.union(with: set2)
+    XCTAssertEqual(newSet, OrderedSet([1,2,3,4,5]))
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testSubtractingArray() {
@@ -34,140 +34,140 @@ final class CreationFunctionTests: XCTestCase {
     let arr2 = [3,4,5]
     let set1 = OrderedSet(arr1)
     let set2 = OrderedSet(arr2)
-    let set = set1.subtracting(set2)
-    XCTAssertEqual(set, OrderedSet([1,2]))
-    XCTAssert(set.sanityCheck())
+    let newSet = set1.subtracting(set2)
+    XCTAssertEqual(newSet, OrderedSet([1,2]))
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testSubtractingSet() {
     let set = Set([3,4,5])
     let oSet = OrderedSet([1,2,3])
-    let subtracting = oSet.subtracting(set)
-    XCTAssertEqual(subtracting, OrderedSet([1,2]))
-    XCTAssert(subtracting.sanityCheck())
+    let newSet = oSet.subtracting(set)
+    XCTAssertEqual(newSet, OrderedSet([1,2]))
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testSorted() {
     let array = [1,2,3,4,5]
     let set = OrderedSet(array)
-    let sort = set.sorted { $0 > $1 }
-    XCTAssertEqual(sort, OrderedSet([5,4,3,2,1]))
-    XCTAssert(set.sanityCheck())
+    let newSet = set.sorted { $0 > $1 }
+    XCTAssertEqual(newSet, OrderedSet([5,4,3,2,1]))
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testFilter() {
     let array = [1,2,3,4,5]
     let set = OrderedSet(array)
-    let even = set.filter { $0 % 2 == 0 }
-    XCTAssertEqual(even, OrderedSet([2,4]))
-    XCTAssert(set.sanityCheck())
+    let newSet = set.filter { $0 % 2 == 0 }
+    XCTAssertEqual(newSet, OrderedSet([2,4]))
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testMap() {
     let array = [1,2,3,4,5]
     let set = OrderedSet(array)
-    let mapped = set.map { $0 * 2 }
-    XCTAssertEqual(mapped, OrderedSet([2,4,6,8,10]))
-    XCTAssert(set.sanityCheck())
+    let newSet = set.map { $0 * 2 }
+    XCTAssertEqual(newSet, OrderedSet([2,4,6,8,10]))
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testCompactMap() {
     let array = [1,2,3,4,5]
     let set = OrderedSet(array)
-    let mapped: OrderedSet<Int> = set.compactMap {
+    let newSet: OrderedSet<Int> = set.compactMap {
       if $0.isMultiple(of: 2) {
         return nil
       } else {
         return $0
       }
     }
-    XCTAssertEqual(mapped, OrderedSet([1,3,5]))
-    XCTAssert(set.sanityCheck())
+    XCTAssertEqual(newSet, OrderedSet([1,3,5]))
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testSwappingAt() {
     let array = [1,2,3,4,5]
     let set = OrderedSet(array)
-    let swapped = set.swappingAt(1, 4)
-    XCTAssertEqual(swapped, OrderedSet([1,5,3,4,2]))
-    XCTAssertEqual(swapped.index(of: 5), 1)
-    XCTAssert(set.sanityCheck())
+    let newSet = set.swappingAt(1, 4)
+    XCTAssertEqual(newSet, OrderedSet([1,5,3,4,2]))
+    XCTAssertEqual(newSet.index(of: 5), 1)
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testRemovingFirst() {
     let array = [1,2,3,4,5]
     let set = OrderedSet(array)
-    let removing = set.removingFirst()
-    XCTAssertEqual(removing, OrderedSet([2,3,4,5]))
-    XCTAssert(set.sanityCheck())
+    let newSet = set.removingFirst()
+    XCTAssertEqual(newSet, OrderedSet([2,3,4,5]))
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testRemovingLast() {
     let array = [1,2,3,4,5]
     let set = OrderedSet(array)
-    let removing = set.removingLast()
-    XCTAssertEqual(removing, OrderedSet([1,2,3,4]))
-    XCTAssert(set.sanityCheck())
+    let newSet = set.removingLast()
+    XCTAssertEqual(newSet, OrderedSet([1,2,3,4]))
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testRemovingAtPosition() {
     let array = [1,2,3,4,5]
     let set = OrderedSet(array)
-    let removing = set.removing(at: 2)
-    XCTAssertEqual(removing, OrderedSet([1,2,4,5]))
-    XCTAssert(set.sanityCheck())
+    let newSet = set.removing(at: 2)
+    XCTAssertEqual(newSet, OrderedSet([1,2,4,5]))
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testRemovingElement() {
     let array = [1,2,3,4,5]
     let set = OrderedSet(array)
-    let removing = set.removing(element: 3)
-    XCTAssertEqual(removing, OrderedSet([1,2,4,5]))
-    XCTAssert(set.sanityCheck())
+    let newSet = set.removing(element: 3)
+    XCTAssertEqual(newSet, OrderedSet([1,2,4,5]))
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testRemovingAtOffsetsStart() {
     let array = [1,2,3,4,5,6,7,8,9,10]
     let set = OrderedSet(array)
     let indexSet = IndexSet(integersIn: 0...5)
-    let removing = set.removing(atOffsets: indexSet)
-    XCTAssertEqual(removing, OrderedSet([7,8,9,10]))
-    XCTAssert(set.sanityCheck())
+    let newSet = set.removing(atOffsets: indexSet)
+    XCTAssertEqual(newSet, OrderedSet([7,8,9,10]))
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testRemovingAtOffsetsMiddle() {
     let array = [1,2,3,4,5,6,7,8,9,10]
     let set = OrderedSet(array)
     let indexSet = IndexSet(integersIn: 3...7)
-    let removing = set.removing(atOffsets: indexSet)
-    XCTAssertEqual(removing, OrderedSet([1,2,3,9,10]))
-    XCTAssert(set.sanityCheck())
+    let newSet = set.removing(atOffsets: indexSet)
+    XCTAssertEqual(newSet, OrderedSet([1,2,3,9,10]))
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testRemovingAtOffsetsEnd() {
     let array = [1,2,3,4,5,6,7,8,9,10]
     let set = OrderedSet(array)
     let indexSet = IndexSet(integersIn: 5...9)
-    let removing = set.removing(atOffsets: indexSet)
-    XCTAssertEqual(removing, OrderedSet([1,2,3,4,5]))
-    XCTAssert(set.sanityCheck())
+    let newSet = set.removing(atOffsets: indexSet)
+    XCTAssertEqual(newSet, OrderedSet([1,2,3,4,5]))
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testRemovingAtOffsetsInterspersed() {
     let array = [1,2,3,4,5,6,7,8,9,10]
     let set = OrderedSet(array)
     let indexSet = IndexSet([0,9,3,1,6])
-    let removing = set.removing(atOffsets: indexSet)
-    XCTAssertEqual(removing, OrderedSet([3,5,6,8,9]))
-    XCTAssert(set.sanityCheck())
+    let newSet = set.removing(atOffsets: indexSet)
+    XCTAssertEqual(newSet, OrderedSet([3,5,6,8,9]))
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testRemovingAll() {
     let array = [1,2,3,4,5]
     let set = OrderedSet(array)
-    let removing = set.removingAll { $0.isMultiple(of: 2) }
-    XCTAssertEqual(removing, OrderedSet([1,3,5]))
-    XCTAssert(set.sanityCheck())
+    let newSet = set.removingAll { $0.isMultiple(of: 2) }
+    XCTAssertEqual(newSet, OrderedSet([1,3,5]))
+    XCTAssert(newSet.sanityCheck())
   }
 
   func testAllSatisfy() {

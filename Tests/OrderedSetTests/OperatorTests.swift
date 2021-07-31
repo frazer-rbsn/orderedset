@@ -33,7 +33,7 @@ final class OperatorTests: XCTestCase {
     let set = OrderedSet([1,2,3])
     let cSet = set + arr
     XCTAssertEqual(cSet, OrderedSet([1,2,3,4,5]))
-    XCTAssert(set.sanityCheck())
+    XCTAssert(cSet.sanityCheck())
   }
 
   func testEqual() {
