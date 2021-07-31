@@ -126,6 +126,42 @@ final class CreationFunctionTests: XCTestCase {
     XCTAssert(set.sanityCheck())
   }
 
+  func testRemovingAtOffsetsStart() {
+    let array = [1,2,3,4,5,6,7,8,9,10]
+    let set = OrderedSet(array)
+    let indexSet = IndexSet(integersIn: 0...5)
+    let removing = set.removing(atOffsets: indexSet)
+    XCTAssertEqual(removing, OrderedSet([7,8,9,10]))
+    XCTAssert(set.sanityCheck())
+  }
+
+  func testRemovingAtOffsetsMiddle() {
+    let array = [1,2,3,4,5,6,7,8,9,10]
+    let set = OrderedSet(array)
+    let indexSet = IndexSet(integersIn: 3...7)
+    let removing = set.removing(atOffsets: indexSet)
+    XCTAssertEqual(removing, OrderedSet([1,2,3,9,10]))
+    XCTAssert(set.sanityCheck())
+  }
+
+  func testRemovingAtOffsetsEnd() {
+    let array = [1,2,3,4,5,6,7,8,9,10]
+    let set = OrderedSet(array)
+    let indexSet = IndexSet(integersIn: 5...9)
+    let removing = set.removing(atOffsets: indexSet)
+    XCTAssertEqual(removing, OrderedSet([1,2,3,4,5]))
+    XCTAssert(set.sanityCheck())
+  }
+
+  func testRemovingAtOffsetsInterspersed() {
+    let array = [1,2,3,4,5,6,7,8,9,10]
+    let set = OrderedSet(array)
+    let indexSet = IndexSet([0,9,3,1,6])
+    let removing = set.removing(atOffsets: indexSet)
+    XCTAssertEqual(removing, OrderedSet([3,5,6,8,9]))
+    XCTAssert(set.sanityCheck())
+  }
+
   func testRemovingAll() {
     let array = [1,2,3,4,5]
     let set = OrderedSet(array)

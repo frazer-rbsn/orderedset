@@ -512,3 +512,21 @@ extension OrderedSet: CustomStringConvertible {
     "OrderedSet (\(count) elements): " + description
   }
 }
+
+#if canImport(Foundation)
+import Foundation
+
+extension OrderedSet {
+
+  /// Returns a new ordered set with the elements at the specified offsets removed.
+  /// `offsets` must not contain any invalid indices.
+  public func removing(atOffsets offsets: IndexSet) -> Self {
+    let indicesToRemove = Array(offsets)
+    var newArr = [Element]()
+    for index in _array.indices where !indicesToRemove.contains(index) {
+      newArr.append(_array[index])
+    }
+    return Self(newArr)
+  }
+}
+#endif
