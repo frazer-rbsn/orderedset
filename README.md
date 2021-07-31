@@ -7,7 +7,7 @@ A static, ordered collection of unique objects.
 
 ## About
 
-In short, an `OrderedSet` is a hybrid of an `Array` and a `Set`. Like an `Array`, it's elements have
+In short, an `OrderedSet` is an immutable hybrid of an `Array` and a `Set`. Like an `Array`, it's elements have
 a defined order, but it enforces uniqueness on it's members like a `Set`. 
 
 You can use `OrderedSet` as a drop-in replacement for an `Array` if:
@@ -23,7 +23,7 @@ You can use `OrderedSet` as a drop-in replacement for a `Set` if:
 
 `OrderedSet` is implemented in pure Swift with no Objective-C constructs. 
 `OrderedSet` is a *static set*, i.e. once initialised, it cannot be mutated. It is similar to `NSOrderedSet` from Objective-C Foundation.
-
+`OrderedSet` has no dependencies. It does not depend on `Foundation`.
 
 ## Installation
 
