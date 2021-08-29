@@ -492,13 +492,23 @@ extension OrderedSet: Codable where Element: Codable {
 
   public init(from decoder: Decoder) throws {
     let c = try decoder.singleValueContainer()
-    let array = try c.decode([Element].self)
-    self.init(array)
+    let array = try c.decode(ContiguousArray<Element>.self)
+    let set = Set(array)
+    guard set.count == array.endIndex else {
+      throw Error.nonUniqueElements
+    }
+    self.init(array: array, set: set)
   }
 
   public func encode(to encoder: Encoder) throws {
     var c = encoder.singleValueContainer()
     try c.encode(_array)
+  }
+}
+
+extension OrderedSet {
+  enum Error : LocalizedError {
+    case nonUniqueElements
   }
 }
 
