@@ -8,9 +8,10 @@ final class MeasureTests: XCTestCase {
   static var smallMeasureSet: OrderedSet<Int>!
   static var largeMeasureSet: OrderedSet<Int>!
 
+  static var smallArray = [Int]()
+  static var largeArray = [Int]()
+
   override class func setUp() {
-    var smallArray = [Int]()
-    var largeArray = [Int]()
     for n in 1...smallMeasureCount {
       smallArray.append(n)
     }
@@ -19,6 +20,19 @@ final class MeasureTests: XCTestCase {
     }
     smallMeasureSet = OrderedSet(smallArray)
     largeMeasureSet = OrderedSet(largeArray)
+  }
+
+  func testMeasureInitLargeArray() {
+    measure {
+      _ = OrderedSet(Self.largeArray)
+    }
+  }
+
+  func testMeasureInitLargeArrayJson() throws {
+    let data = try JSONEncoder().encode(Self.largeArray)
+    measure {
+      _ = try! JSONDecoder().decode([Int].self, from: data)
+    }
   }
 
   func testMeasureContainsSmall() {
