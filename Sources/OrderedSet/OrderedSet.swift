@@ -531,18 +531,18 @@ extension OrderedSet {
 }
 #endif
 
-#if canImport(SwiftUI)
-import SwiftUI
-
-extension OrderedSet {
-
-  /// Returns a new ordered set with the elements at the specified offsets moved.
-  /// Calls the `move(fromOffsets:_, toOffset:_)` function which is defined in the `SwiftUI` framework, and is undocumented.
-  /// Both parameters must not contain any invalid indices.
-  public func moving(fromOffsets source: IndexSet, toOffset destination: Int) -> Self {
-    var arr = _array
-    arr.move(fromOffsets: source, toOffset: destination)
-    return Self(arr)
-  }
-}
-#endif
+//#if canImport(SwiftUI)
+//import SwiftUI
+//
+//extension OrderedSet {
+//
+//  /// Returns a new ordered set with the elements at the specified offsets moved.
+//  /// Calls the `move(fromOffsets:_, toOffset:_)` function which is defined in the `SwiftUI` framework, and is undocumented.
+//  /// Both parameters must not contain any invalid indices.
+//  public func moving(fromOffsets source: IndexSet, toOffset destination: Int) -> Self {
+//    var arr = _array
+//    arr.move(fromOffsets: source, toOffset: destination)
+//    return Self(arr)
+//  }
+//}
+//#endif
