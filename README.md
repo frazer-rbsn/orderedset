@@ -1,7 +1,8 @@
 # OrderedSet
 A static, ordered collection of unique objects.
 
-[![Swift](https://github.com/frazer-rbsn/OrderedSet/actions/workflows/swift.yml/badge.svg)](https://github.com/frazer-rbsn/OrderedSet/actions/workflows/swift.yml)
+[![macOS](https://github.com/frazer-rbsn/OrderedSet/actions/workflows/macos.yml/badge.svg)](https://github.com/frazer-rbsn/OrderedSet/actions/workflows/macos.yml)
+[![Ubuntu](https://github.com/frazer-rbsn/OrderedSet/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/frazer-rbsn/OrderedSet/actions/workflows/ubuntu.yml)
 
 
 
