@@ -150,6 +150,17 @@ public struct OrderedSet<E: Hashable> {
     _set.contains(element)
   }
 
+  /// Returns `true` if this ordered set contains any element in `elements`.
+  /// - complexity: O(n) where n is the length of `elements`.
+  public func contains(anyOf elements: Element...) -> Bool {
+    for e in elements {
+      if _set.contains(e) {
+        return true
+      }
+    }
+    return false
+  }
+
   /// Returns the index of `element`, or `nil` if it is not a member of this ordered set.
   /// - complexity: O(1)
   public func index(of element: Element) -> Index? {
