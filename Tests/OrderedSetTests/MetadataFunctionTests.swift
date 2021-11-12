@@ -13,8 +13,8 @@ final class MetadataFunctionTests: XCTestCase {
   func testContainsAnyOf() {
     let array = [1,2,3,4,5]
     let set = OrderedSet(array)
-    XCTAssert(set.contains(anyOf: [7,5]))
-    XCTAssertFalse(set.contains(anyOf: [7,8]))
+    XCTAssert(set.contains(anyOf: 7,5))
+    XCTAssertFalse(set.contains(anyOf: 7,8))
   }
 
   func testIndexOf() {
