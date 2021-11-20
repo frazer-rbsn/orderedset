@@ -3,6 +3,8 @@ import XCTest
 
 final class CreationFunctionTests: XCTestCase {
 
+  // MARK: - Adding Elements
+
   func testAppending() {
     let array = [1,2,3,4,5]
     let set = OrderedSet(array)
@@ -29,78 +31,8 @@ final class CreationFunctionTests: XCTestCase {
     XCTAssert(newSet.sanityCheck())
   }
 
-  func testSubtractingArray() {
-    let arr1 = [1,2,3]
-    let arr2 = [3,4,5]
-    let set1 = OrderedSet(arr1)
-    let set2 = OrderedSet(arr2)
-    let newSet = set1.subtracting(set2)
-    XCTAssertEqual(newSet, OrderedSet([1,2]))
-    XCTAssert(newSet.sanityCheck())
-  }
 
-  func testSubtractingSet() {
-    let set = Set([3,4,5])
-    let oSet = OrderedSet([1,2,3])
-    let newSet = oSet.subtracting(set)
-    XCTAssertEqual(newSet, OrderedSet([1,2]))
-    XCTAssert(newSet.sanityCheck())
-  }
-
-  func testSorted() {
-    let array = [1,2,3,4,5]
-    let set = OrderedSet(array)
-    let newSet = set.sorted { $0 > $1 }
-    XCTAssertEqual(newSet, OrderedSet([5,4,3,2,1]))
-    XCTAssert(newSet.sanityCheck())
-  }
-
-//  func testMoving() {
-//    let array = [1,2,3,4,5]
-//    let set = OrderedSet(array)
-//    let newSet = set.moving(fromOffsets: IndexSet([0]), toOffset: 3)
-//    XCTAssertEqual(newSet, OrderedSet([2,3,1,4,5]))
-//    XCTAssert(newSet.sanityCheck())
-//  }
-
-  func testFilter() {
-    let array = [1,2,3,4,5]
-    let set = OrderedSet(array)
-    let newSet = set.filter { $0 % 2 == 0 }
-    XCTAssertEqual(newSet, OrderedSet([2,4]))
-    XCTAssert(newSet.sanityCheck())
-  }
-
-  func testMap() {
-    let array = [1,2,3,4,5]
-    let set = OrderedSet(array)
-    let newSet = set.map { $0 * 2 }
-    XCTAssertEqual(newSet, OrderedSet([2,4,6,8,10]))
-    XCTAssert(newSet.sanityCheck())
-  }
-
-  func testCompactMap() {
-    let array = [1,2,3,4,5]
-    let set = OrderedSet(array)
-    let newSet: OrderedSet<Int> = set.compactMap {
-      if $0.isMultiple(of: 2) {
-        return nil
-      } else {
-        return $0
-      }
-    }
-    XCTAssertEqual(newSet, OrderedSet([1,3,5]))
-    XCTAssert(newSet.sanityCheck())
-  }
-
-  func testSwappingAt() {
-    let array = [1,2,3,4,5]
-    let set = OrderedSet(array)
-    let newSet = set.swappingAt(1, 4)
-    XCTAssertEqual(newSet, OrderedSet([1,5,3,4,2]))
-    XCTAssertEqual(newSet.index(of: 5), 1)
-    XCTAssert(newSet.sanityCheck())
-  }
+  // MARK: -  Removing Elements
 
   func testRemovingFirst() {
     let array = [1,2,3,4,5]
@@ -122,14 +54,6 @@ final class CreationFunctionTests: XCTestCase {
     let array = [1,2,3,4,5]
     let set = OrderedSet(array)
     let newSet = set.removing(at: 2)
-    XCTAssertEqual(newSet, OrderedSet([1,2,4,5]))
-    XCTAssert(newSet.sanityCheck())
-  }
-
-  func testRemovingElement() {
-    let array = [1,2,3,4,5]
-    let set = OrderedSet(array)
-    let newSet = set.removing(element: 3)
     XCTAssertEqual(newSet, OrderedSet([1,2,4,5]))
     XCTAssert(newSet.sanityCheck())
   }
@@ -170,7 +94,15 @@ final class CreationFunctionTests: XCTestCase {
     XCTAssert(newSet.sanityCheck())
   }
 
-  func testRemovingAll() {
+  func testRemovingElement() {
+    let array = [1,2,3,4,5]
+    let set = OrderedSet(array)
+    let newSet = set.removing(element: 3)
+    XCTAssertEqual(newSet, OrderedSet([1,2,4,5]))
+    XCTAssert(newSet.sanityCheck())
+  }
+
+  func testRemovingAllWhere() {
     let array = [1,2,3,4,5]
     let set = OrderedSet(array)
     let newSet = set.removingAll { $0.isMultiple(of: 2) }
@@ -178,9 +110,89 @@ final class CreationFunctionTests: XCTestCase {
     XCTAssert(newSet.sanityCheck())
   }
 
-  func testAllSatisfy() {
-    let array = [2,4,6,8]
+  func testFilter() {
+    let array = [1,2,3,4,5]
     let set = OrderedSet(array)
-    XCTAssert(set.allSatisfy { $0.isMultiple(of: 2) })
+    let newSet = set.filter { $0 % 2 == 0 }
+    XCTAssertEqual(newSet, OrderedSet([2,4]))
+    XCTAssert(newSet.sanityCheck())
+  }
+
+  func testSubtractingArray() {
+    let arr1 = [1,2,3]
+    let arr2 = [3,4,5]
+    let set1 = OrderedSet(arr1)
+    let set2 = OrderedSet(arr2)
+    let newSet = set1.subtracting(set2)
+    XCTAssertEqual(newSet, OrderedSet([1,2]))
+    XCTAssert(newSet.sanityCheck())
+  }
+
+  func testSubtractingSet() {
+    let set = Set([3,4,5])
+    let oSet = OrderedSet([1,2,3])
+    let newSet = oSet.subtracting(set)
+    XCTAssertEqual(newSet, OrderedSet([1,2]))
+    XCTAssert(newSet.sanityCheck())
+  }
+
+  func testIntersectingSet() {
+    let set = Set([3,4,5])
+    let oSet = OrderedSet([1,2,3,4])
+    let newSet = oSet.intersection(set)
+    XCTAssertEqual(newSet, OrderedSet([3,4]))
+    XCTAssert(newSet.sanityCheck())
+  }
+
+
+  // MARK: - Reordering Elements
+
+  func testSorted() {
+    let array = [1,2,3,4,5]
+    let set = OrderedSet(array)
+    let newSet = set.sorted { $0 > $1 }
+    XCTAssertEqual(newSet, OrderedSet([5,4,3,2,1]))
+    XCTAssert(newSet.sanityCheck())
+  }
+
+  func testSwappingAt() {
+    let array = [1,2,3,4,5]
+    let set = OrderedSet(array)
+    let newSet = set.swappingAt(1, 4)
+    XCTAssertEqual(newSet, OrderedSet([1,5,3,4,2]))
+    XCTAssertEqual(newSet.index(of: 5), 1)
+    XCTAssert(newSet.sanityCheck())
+  }
+
+//  func testMoving() {
+//    let array = [1,2,3,4,5]
+//    let set = OrderedSet(array)
+//    let newSet = set.moving(fromOffsets: IndexSet([0]), toOffset: 3)
+//    XCTAssertEqual(newSet, OrderedSet([2,3,1,4,5]))
+//    XCTAssert(newSet.sanityCheck())
+//  }
+
+  // MARK: Transforming Elements
+
+  func testMap() {
+    let array = [1,2,3,4,5]
+    let set = OrderedSet(array)
+    let newSet = set.map { $0 * 2 }
+    XCTAssertEqual(newSet, OrderedSet([2,4,6,8,10]))
+    XCTAssert(newSet.sanityCheck())
+  }
+
+  func testCompactMap() {
+    let array = [1,2,3,4,5]
+    let set = OrderedSet(array)
+    let newSet: OrderedSet<Int> = set.compactMap {
+      if $0.isMultiple(of: 2) {
+        return nil
+      } else {
+        return $0
+      }
+    }
+    XCTAssertEqual(newSet, OrderedSet([1,3,5]))
+    XCTAssert(newSet.sanityCheck())
   }
 }

@@ -31,4 +31,10 @@ final class MiscTests: XCTestCase {
     XCTAssertNil(set[safe:6])
     XCTAssertEqual(set[safe:2], 2)
   }
+
+  func testAllSatisfy() {
+    let array = [2,4,6,8]
+    let set = OrderedSet(array)
+    XCTAssert(set.allSatisfy { $0.isMultiple(of: 2) })
+  }
 }
