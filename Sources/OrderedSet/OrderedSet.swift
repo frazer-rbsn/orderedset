@@ -337,6 +337,17 @@ public struct OrderedSet<E: Hashable> {
     }
   }
 
+  /// Returns a new ordered set containing the elements of this ordered set that also occur in the given set.
+  /// - parameter retainOrder: The returned ordered set retains the relative order of the elements. Defaults to `true`.
+  ///   If retaining the order is not necessary, passing in `false` may yield a performance benefit.
+  public func intersection(_ set: Set<Element>, retainOrder: Bool = true) -> Self {
+    if retainOrder {
+      return Self(_array.filter { set.contains($0) })
+    } else {
+      return Self(_set.intersection(set))
+    }
+  }
+
   // MARK: Reordering Elements
 
   /// Returns a new ordered set with the elements sorted by the given predicate.
