@@ -136,7 +136,15 @@ final class CreationFunctionTests: XCTestCase {
     XCTAssert(newSet.sanityCheck())
   }
 
-  func testIntersectingSet() {
+  func testIntersection() {
+    let set = OrderedSet([3,4,5])
+    let oSet = OrderedSet([1,2,3,4])
+    let newSet = oSet.intersection(set)
+    XCTAssertEqual(newSet, OrderedSet([3,4]))
+    XCTAssert(newSet.sanityCheck())
+  }
+
+  func testIntersectionSet() {
     let set = Set([3,4,5])
     let oSet = OrderedSet([1,2,3,4])
     let newSet = oSet.intersection(set)
