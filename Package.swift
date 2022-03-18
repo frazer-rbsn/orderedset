@@ -8,13 +8,13 @@ let package = Package(
       name: "OrderedSet",
       targets: ["OrderedSet"])
   ],
-  dependencies: [],
   targets: [
     .target(
       name: "OrderedSet",
-      dependencies: []),
+      path: "Sources/"),
     .testTarget(
       name: "OrderedSetTests",
-      dependencies: ["OrderedSet"])
+      dependencies: ["OrderedSet"],
+      path: "Tests/")
   ]
 )
