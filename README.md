@@ -22,8 +22,8 @@ You can use `OrderedSet` as a drop-in replacement for a `Set` if:
  * you do not need to perform in-place modification of the set,
  * and you require the members of the set to have a defined order.
 
-`OrderedSet` is implemented in pure Swift with no Objective-C constructs. 
-`OrderedSet` is a *static set*, i.e. once initialised, it cannot be mutated. It is similar to `NSOrderedSet` from Objective-C Foundation.
+`OrderedSet` is implemented in pure Swift with no Objective-C constructs.  
+`OrderedSet` is a *static set*, i.e. once initialised, it cannot be mutated. It is similar to `NSOrderedSet` from Objective-C Foundation.  
 `OrderedSet` has no dependencies. It does not depend on `Foundation`.
 
 ## Installation
@@ -39,13 +39,13 @@ dependencies: [
 
 ## Usage
 
-For example, if we have a large array of strings, and we know that every string in this array should be unique:
+For example, if we have a large array of strings:
 
 ```swift
 let largeCollection: [String]
 ```
 
-We can easily change this to an OrderedSet like this:
+If it's important to retain the order of these strings, and we want to ensure that each string is unqiue, we can easily change this to an `OrderedSet` like this:
 
 ```swift
 let largeCollection: OrderedSet<String>
