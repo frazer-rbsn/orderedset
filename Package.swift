@@ -5,7 +5,7 @@ let package = Package(
   name: "OrderedSet",
   platforms: [
     .iOS(.v11),
-    .macOS(.v11)
+    .macOS(.v10_13)
   ],
   products: [
     .library(
