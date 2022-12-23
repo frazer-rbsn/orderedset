@@ -3,6 +3,10 @@ import PackageDescription
 
 let package = Package(
   name: "OrderedSet",
+  platforms: [
+    .iOS(.v11),
+    .macOS(.v11)
+  ],
   products: [
     .library(
       name: "OrderedSet",
