@@ -131,6 +131,18 @@ final class MeasureTests: XCTestCase {
     }
   }
 
+  func testMeasureRemovingFirstSmall() {
+    measure {
+      _ = Self.smallMeasureSet.removingFirst()
+    }
+  }
+
+  func testMeasureRemovingFirstLarge() {
+    measure {
+      _ = Self.largeMeasureSet.removingFirst()
+    }
+  }
+
   func testMeasureSwappingAtSmall() {
     measure {
       _ = Self.smallMeasureSet.swappingAt(2, 9)

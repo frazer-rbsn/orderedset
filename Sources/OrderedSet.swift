@@ -267,16 +267,20 @@ public struct OrderedSet<E: Hashable> {
   /// The collection must not be empty.
   public func removingFirst() -> Self {
     var arr = _array
-    arr.removeFirst()
-    return Self(arr)
+    let e = arr.removeFirst()
+    var set = _set
+    set.remove(e)
+    return Self(array: arr, set: set)
   }
 
   /// Returns a new ordered set with the last element removed.
   /// The collection must not be empty.
   public func removingLast() -> Self {
     var arr = _array
-    arr.removeLast()
-    return Self(arr)
+    let e = arr.removeLast()
+    var set = _set
+    set.remove(e)
+    return Self(array: arr, set: set)
   }
 
   /// Returns a new ordered set with the element at the specified position removed.
@@ -284,8 +288,10 @@ public struct OrderedSet<E: Hashable> {
   ///   `position` must be a valid index of the ordered set.
   public func removing(at position: Index) -> Self {
     var arr = _array
-    arr.remove(at: position)
-    return Self(arr)
+    let e = arr.remove(at: position)
+    var set = _set
+    set.remove(e)
+    return Self(array: arr, set: set)
   }
 
   /// Returns a new ordered set with the member element removed.
@@ -294,9 +300,7 @@ public struct OrderedSet<E: Hashable> {
   /// - parameter element: The member to remove.
   public func removing(element: Element) -> Self {
     guard let index = self.index(of: element) else { return self }
-    var arr = _array
-    arr.remove(at: index)
-    return Self(arr)
+    return removing(at: index)
   }
 
   /// Returns a new ordered set with the elements filtered by the given predicate.
