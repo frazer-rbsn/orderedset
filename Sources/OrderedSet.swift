@@ -515,7 +515,7 @@ extension OrderedSet: Hashable {}
 
 extension OrderedSet: Equatable {
 
-  static public func == <E>(lhs: OrderedSet<E>, rhs: OrderedSet<E>) -> Bool {
+  static public func == <F>(lhs: OrderedSet<F>, rhs: OrderedSet<F>) -> Bool {
     lhs._array == rhs._array
   }
 }
