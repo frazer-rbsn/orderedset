@@ -16,10 +16,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - uses: swift-actions/setup-swift@v2.0.0
+    - uses: swift-actions/setup-swift@v2.1.0
       with:
-        # Swift version to configure
-        swift-version: "5.10.1"
+        swift-version: "5.1.0"
     - name: Build
       run: swift build -v
     - name: Run tests
