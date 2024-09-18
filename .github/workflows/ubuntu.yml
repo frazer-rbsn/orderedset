@@ -16,9 +16,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - uses: swift-actions/setup-swift@v2.1.0
-      with:
-        swift-version: "5.1.0"
+    - name: Install curl
+      run: sudo apt install -y curl
+    - name: Add Swift repo
+      run: curl -s https://archive.swiftlang.xyz/install.sh | sudo bash
+    - name: Install swift
+      run: sudo apt install swiftlang
     - name: Build
       run: swift build -v
     - name: Run tests
