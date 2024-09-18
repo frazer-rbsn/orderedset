@@ -541,6 +541,13 @@ extension OrderedSet: Codable where Element: Codable {
 extension OrderedSet {
   enum Error : LocalizedError {
     case nonUniqueElements
+
+    var errorDescription: String? {
+      switch self {
+        case .nonUniqueElements:
+          return "Attempted to decode an array into an OrderedSet, but found non-unique elements in the collection."
+      } 
+    }
   }
 }
 
