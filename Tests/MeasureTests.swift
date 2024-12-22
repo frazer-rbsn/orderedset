@@ -5,11 +5,11 @@ final class MeasureTests: XCTestCase {
 
   static let smallMeasureCount = 10
   static let largeMeasureCount = 100_000
-  static var smallMeasureSet: OrderedSet<Int>!
-  static var largeMeasureSet: OrderedSet<Int>!
+  nonisolated(unsafe) static var smallMeasureSet: OrderedSet<Int>!
+  nonisolated(unsafe) static var largeMeasureSet: OrderedSet<Int>!
 
-  static var smallArray = [Int]()
-  static var largeArray = [Int]()
+  nonisolated(unsafe) static var smallArray = [Int]()
+  nonisolated(unsafe) static var largeArray = [Int]()
 
   override class func setUp() {
     for n in 1...smallMeasureCount {

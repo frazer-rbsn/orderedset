@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
   name: "OrderedSet",
   platforms: [
-    .iOS(.v11),
+    .iOS(.v12),
     .macOS(.v10_13)
   ],
   products: [
