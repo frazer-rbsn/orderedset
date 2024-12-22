@@ -32,7 +32,7 @@ Swift Package Manager:
 
 ```swift
 dependencies: [
-  .package(url: "https://github.com/frazer-rbsn/OrderedSet.git", exact: "1.2.2"),
+  .package(url: "https://github.com/frazer-rbsn/OrderedSet.git", exact: "2.0.0"),
 ],
 ```
 
@@ -144,6 +144,7 @@ let i = s.index(of: "Bob")
 
 ### Conformances
 
+* `Sendable`
 * `ExpressibleByArrayLiteral`
 * `RandomAccessCollection`
 * `Hashable`
