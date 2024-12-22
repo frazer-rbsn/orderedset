@@ -3,16 +3,15 @@
  Available under the MIT License. https://mit-license.org
  - author: Frazer Robinson
  */
-public struct OrderedSet<E: Hashable> {
+@frozen public struct OrderedSet<E: Hashable> {
 
   // MARK: - Typealiases
 
   public typealias Element = E
   public typealias Index = Int
 
-  private typealias HashValue = Int
-  private typealias HashIndexDict = [HashValue: Index]
-
+  @usableFromInline internal typealias HashValue = Int
+  @usableFromInline internal typealias HashIndexDict = [HashValue: Index]
 
   // MARK: - Internal Storage
 
