@@ -562,6 +562,10 @@ extension OrderedSet: CustomStringConvertible {
   }
 }
 
+extension OrderedSet: Sendable where Element: Sendable {
+
+}
+
 #if canImport(Foundation)
 import Foundation
 
