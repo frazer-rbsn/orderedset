@@ -14,7 +14,19 @@ final class MiscTests: XCTestCase {
 		let array = [1, 2, 3, 4, 5]
 		let set = OrderedSet(array)
 		print(set)
+	}
+
+	func testDebugDescription() {
+		let array = [1, 2, 3, 4, 5]
+		let set = OrderedSet(array)
 		print(set.debugDescription)
+	}
+
+	func testDescription() {
+		let array = [1, 2, 3, 4, 5]
+		let set = OrderedSet(array)
+		print(set)
+		print(set.description)
 	}
 
 	func testEnumerate() {

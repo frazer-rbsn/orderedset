@@ -546,7 +546,7 @@ extension OrderedSet {
 extension OrderedSet: CustomStringConvertible {
 
 	public var description: String {
-		"\(_array)"
+		array.description
 	}
 
 	public var debugDescription: String {
