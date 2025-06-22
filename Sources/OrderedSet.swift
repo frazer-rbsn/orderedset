@@ -1,8 +1,6 @@
-/**
- A static, ordered collection of unique objects.
- Available under the MIT License. https://mit-license.org
- - author: Frazer Robinson
- */
+/// A static, ordered collection of unique objects.
+/// Available under the MIT License. https://mit-license.org
+/// - author: Frazer Robinson
 @frozen public struct OrderedSet<E: Hashable> {
 
 	// MARK: - Typealiases
@@ -10,15 +8,14 @@
 	public typealias Element = E
 	public typealias Index = Int
 
-	@usableFromInline internal typealias HashValue = Int
-	@usableFromInline internal typealias HashIndexDict = [HashValue: Index]
+	@usableFromInline typealias HashValue = Int
+	@usableFromInline typealias HashIndexDict = [HashValue: Index]
 
 	// MARK: - Internal Storage
 
 	private let _array: ContiguousArray<Element>
 	private let _set: Set<Element>
 	private let _hashIndexDict: HashIndexDict
-
 
 	// MARK: - Public Stored Properties
 
@@ -27,7 +24,6 @@
 
 	/// Returns `true` if this ordered set is empty.
 	public let isEmpty: Bool
-
 
 	// MARK: - Public Initialisers
 
@@ -46,25 +42,24 @@
 	public init(_ set: Set<Element>, sortedBy areInIncreasingOrder: (Element, Element) throws -> Bool) rethrows {
 		let sortedArray = try set.sorted(by: areInIncreasingOrder)
 		self.init(array: ContiguousArray(sortedArray),
-							set: set,
-							hashIndexDict: Self.hashIndexDict(from: sortedArray))
+		          set: set,
+		          hashIndexDict: Self.hashIndexDict(from: sortedArray))
 	}
 
 	/// Creates an ordered set with the contents of `set`, sorted according to the member type's conformance to `Comparable`.
 	public init(_ set: Set<Element>) where Element: Comparable {
 		let sortedArray = set.sorted()
 		self.init(array: ContiguousArray(sortedArray),
-							set: set,
-							hashIndexDict: Self.hashIndexDict(from: sortedArray))
+		          set: set,
+		          hashIndexDict: Self.hashIndexDict(from: sortedArray))
 	}
 
 	/// Creates an empty ordered set.
 	public init() {
 		self.init(array: [],
-							set: [],
-							hashIndexDict: [:])
+		          set: [],
+		          hashIndexDict: [:])
 	}
-
 
 	// MARK: - Private Initialisers
 
@@ -75,12 +70,13 @@
 		for element in sequence {
 			let inserted = set.insert(element).inserted
 			guard inserted else { continue }
+
 			array.append(element)
 			indexDict[element.hashValue] = array.endIndex - 1
 		}
 		self.init(array: array,
-							set: set,
-							hashIndexDict: indexDict)
+		          set: set,
+		          hashIndexDict: indexDict)
 	}
 
 	private init<S>(retainingLastOccurrencesIn sequence: S) where Element == S.Element, S: Sequence {
@@ -95,19 +91,19 @@
 			array.append(element)
 		}
 		self.init(array: array,
-							set: set)
+		          set: set)
 	}
 
 	private init(array: ContiguousArray<Element>, set: Set<Element>) {
 		self.init(array: array,
-							set: set,
-							hashIndexDict: Self.hashIndexDict(from: array))
+		          set: set,
+		          hashIndexDict: Self.hashIndexDict(from: array))
 	}
 
 	private init(array: [Element], set: Set<Element>) {
 		self.init(array: ContiguousArray(array),
-							set: set,
-							hashIndexDict: Self.hashIndexDict(from: array))
+		          set: set,
+		          hashIndexDict: Self.hashIndexDict(from: array))
 	}
 
 	private init(array: ContiguousArray<Element>, set: Set<Element>, hashIndexDict: HashIndexDict) {
@@ -126,7 +122,6 @@
 		return indexDict
 	}
 
-
 	// MARK: - Computed Properties
 
 	/// Returns the contents of this ordered set as an array.
@@ -139,7 +134,6 @@
 	/// Returns the contents of this ordered set as an unordered set.
 	/// - complexity: O(1)
 	public var unorderedSet: Set<Element> { _set }
-
 
 	// MARK: - Metadata Functions
 
@@ -222,7 +216,6 @@
 		_set.isDisjoint(with: otherSet)
 	}
 
-
 	// MARK: - Creation Functions
 
 	// MARK: Adding Elements
@@ -234,6 +227,7 @@
 		var set = _set
 		let inserted = set.insert(element).inserted
 		guard inserted else { return self }
+
 		var dict = _hashIndexDict
 		dict[element.hashValue] = endIndex
 		var array = _array
@@ -248,6 +242,7 @@
 		var set = _set
 		let inserted = set.insert(element).inserted
 		guard inserted else { return self }
+
 		var array = _array
 		array.insert(element, at: index)
 		return Self(array: array, set: set)
@@ -299,6 +294,7 @@
 	/// - parameter element: The member to remove.
 	public func removing(element: Element) -> Self {
 		guard let index = self.index(of: element) else { return self }
+
 		return removing(at: index)
 	}
 
@@ -317,9 +313,9 @@
 	///   If retaining the order is not necessary, passing in `false` may yield a performance benefit.
 	public func filter(_ isIncluded: (Element) throws -> Bool, retainOrder: Bool = true) rethrows -> Self {
 		if retainOrder {
-			return Self(try _array.filter(isIncluded))
+			return try Self(_array.filter(isIncluded))
 		} else {
-			return Self(try _set.filter(isIncluded))
+			return try Self(_set.filter(isIncluded))
 		}
 	}
 
@@ -367,7 +363,7 @@
 	///   lost.
 	/// - note: Documentation based on `Swift.Sequence.sorted(by:)`
 	public func sorted(by areInIncreasingOrder: (Element, Element) throws -> Bool) rethrows -> Self {
-		Self(array: try _array.sorted(by: areInIncreasingOrder), set: _set)
+		try Self(array: _array.sorted(by: areInIncreasingOrder), set: _set)
 	}
 
 	/// Returns a new ordered set with the elements at indices `i` and `j` swapped.
@@ -435,9 +431,9 @@
 	/// - note: Documentation based on `Swift.Collection.map(_:)`
 	public func map<T>(_ transform: (Element) throws -> T, retainOrder: Bool = true) rethrows -> OrderedSet<T> where T: Hashable {
 		if retainOrder {
-			return OrderedSet<T>(try _array.map(transform))
+			return try OrderedSet<T>(_array.map(transform))
 		} else {
-			return OrderedSet<T>(try _set.map(transform))
+			return try OrderedSet<T>(_set.map(transform))
 		}
 	}
 
@@ -451,45 +447,41 @@
 	/// - note: Documentation based on `Swift.Collection.compactMap(_:)`
 	public func compactMap<T>(_ transform: (Element) throws -> T?, retainOrder: Bool = true) rethrows -> OrderedSet<T> where T: Hashable {
 		if retainOrder {
-			return OrderedSet<T>(try _array.compactMap(transform))
+			return try OrderedSet<T>(_array.compactMap(transform))
 		} else {
-			return OrderedSet<T>(try _set.compactMap(transform))
+			return try OrderedSet<T>(_set.compactMap(transform))
 		}
 	}
-
 
 	// MARK: - Subscripts
 
 	/// Returns the element at `index`, or `nil` if this index is out of bounds.
 	public subscript(safe index: Index) -> Element? {
 		guard indices.contains(index) else { return nil }
+
 		return _array[index]
 	}
-
 
 	// MARK: - Internal Functions
 
 	func sanityCheck() -> Bool {
-		return _array.count == _set.count
-		&& _set.count == _hashIndexDict.count
-		&& endIndex == _array.count
-		&& _hashIndexDict.count == Set(_hashIndexDict.values).count // Check for duplicate indices
-		&& _set == Set(_array) // Check set and array match
+		_array.count == _set.count
+			&& _set.count == _hashIndexDict.count
+			&& endIndex == _array.count
+			&& _hashIndexDict.count == Set(_hashIndexDict.values).count // Check for duplicate indices
+			&& _set == Set(_array) // Check set and array match
 	}
 }
 
-
-
-
 // MARK: - Extensions
 
-extension OrderedSet {
+public extension OrderedSet {
 
-	static public func + (lhs: Self, rhs: Self) -> Self {
+	static func + (lhs: Self, rhs: Self) -> Self {
 		Self(lhs._array + rhs._array)
 	}
 
-	static public func + <S>(lhs: Self, rhs: S) -> Self where Element == S.Element, S: Sequence {
+	static func + <S>(lhs: Self, rhs: S) -> Self where Element == S.Element, S: Sequence {
 		Self(lhs._array + rhs)
 	}
 }
@@ -514,7 +506,7 @@ extension OrderedSet: Hashable {}
 
 extension OrderedSet: Equatable {
 
-	static public func == <F>(lhs: OrderedSet<F>, rhs: OrderedSet<F>) -> Bool {
+	public static func == <F>(lhs: OrderedSet<F>, rhs: OrderedSet<F>) -> Bool {
 		lhs._array == rhs._array
 	}
 }
@@ -528,6 +520,7 @@ extension OrderedSet: Codable where Element: Codable {
 		guard set.count == array.endIndex else {
 			throw Error.nonUniqueElements
 		}
+
 		self.init(array: array, set: set)
 	}
 
@@ -538,7 +531,7 @@ extension OrderedSet: Codable where Element: Codable {
 }
 
 extension OrderedSet {
-	enum Error : LocalizedError {
+	enum Error: LocalizedError {
 		case nonUniqueElements
 
 		var errorDescription: String? {
@@ -561,32 +554,30 @@ extension OrderedSet: CustomStringConvertible {
 	}
 }
 
-extension OrderedSet: Sendable where Element: Sendable {
-
-}
+extension OrderedSet: Sendable where Element: Sendable {}
 
 #if canImport(Foundation)
-import Foundation
+	import Foundation
 
-extension OrderedSet {
+	public extension OrderedSet {
 
-	/// Returns a new ordered set with the elements at the specified offsets removed.
-	/// `offsets` must not contain any invalid indices.
-	public func removing(atOffsets offsets: IndexSet) -> Self {
-		let indicesToRemove = Array(offsets)
-		var newArr = [Element]()
-		for index in _array.indices where !indicesToRemove.contains(index) {
-			newArr.append(_array[index])
+		/// Returns a new ordered set with the elements at the specified offsets removed.
+		/// `offsets` must not contain any invalid indices.
+		func removing(atOffsets offsets: IndexSet) -> Self {
+			let indicesToRemove = Array(offsets)
+			var newArr = [Element]()
+			for index in _array.indices where !indicesToRemove.contains(index) {
+				newArr.append(_array[index])
+			}
+			return Self(newArr)
 		}
-		return Self(newArr)
 	}
-}
 #endif
 
-//#if canImport(SwiftUI)
-//import SwiftUI
+// #if canImport(SwiftUI)
+// import SwiftUI
 //
-//extension OrderedSet {
+// extension OrderedSet {
 //
 //  /// Returns a new ordered set with the elements at the specified offsets moved.
 //  /// Calls the `move(fromOffsets:_, toOffset:_)` function which is defined in the `SwiftUI` framework, and is undocumented.
@@ -596,5 +587,5 @@ extension OrderedSet {
 //    arr.move(fromOffsets: source, toOffset: destination)
 //    return Self(arr)
 //  }
-//}
-//#endif
+// }
+// #endif

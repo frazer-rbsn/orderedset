@@ -1,0 +1,40 @@
+--allman false
+--commas inline
+--header strip
+--indent tab
+--indentcase true
+--lineaftermarks true
+--nilinit insert
+--nospaceoperators ...
+--propertytypes explicit
+--xcodeindentation true
+
+--enable acronyms
+--enable blankLinesAfterGuardStatements
+--enable blankLinesAroundMark
+--enable blankLinesAtEndOfScope
+--enable blankLinesBetweenChainedFunctions
+--enable blankLinesBetweenImports
+--enable blankLinesBetweenScopes
+--enable blockComments
+--enable braces
+--enable duplicateImports
+--enable elseOnSameLine
+--enable environmentEntry
+--enable fileHeader
+--enable modifierOrder
+--enable opaqueGenericParameters
+--enable preferCountWhere
+
+--enable redundantBreak
+--enable redundantGet
+--enable redundantLetError
+--enable redundantNilInit
+--enable redundantParens
+
+--disable blankLinesAtStartOfScope
+--disable consecutiveSpaces
+--disable enumNamespaces
+--disable preferKeyPath
+--disable redundantSelf
+--disable wrapMultilineStatementBraces
