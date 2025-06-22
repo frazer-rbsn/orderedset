@@ -25,6 +25,17 @@ final class MetadataFunctionTests: XCTestCase {
 		XCTAssertNil(set.index(of: 6))
 	}
 
+	func testFirstLastIndexOf() {
+		let array = [1, 2, 3, 4, 5]
+		let set = OrderedSet(array)
+		XCTAssertEqual(set.firstIndex(of: 1), 0)
+		XCTAssertEqual(set.lastIndex(of: 1), 0)
+		XCTAssertEqual(set.firstIndex(of: 5), 4)
+		XCTAssertEqual(set.lastIndex(of: 5), 4)
+		XCTAssertNil(set.firstIndex(of: 6))
+		XCTAssertNil(set.lastIndex(of: 6))
+	}
+
 	func testFirst() {
 		let array = [1, 2, 3, 4, 5]
 		let set = OrderedSet(array)
