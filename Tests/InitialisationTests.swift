@@ -75,4 +75,19 @@ final class InitialisationTests: XCTestCase {
 		XCTAssertEqual(set.count, 0)
 		XCTAssert(set.sanityCheck())
 	}
+
+	func testSendable() async {
+		struct SomethingSendable: Sendable, Hashable {
+			let someValue: Int
+		}
+
+		func thisFunctionNeedsASendableType(_ x: Sendable) {
+			print("Yes, this is sendable")
+		}
+
+		let array = (0...5).map { SomethingSendable.init(someValue: $0) }
+		let x = OrderedSet(array)
+		// Using a function to check conformance at compile time as `Sendable` is a marker protocol
+		thisFunctionNeedsASendableType(x)
+	}
 }
