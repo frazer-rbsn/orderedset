@@ -170,6 +170,13 @@ final class CreationFunctionTests: XCTestCase {
 		XCTAssert(newSet.sanityCheck())
 	}
 
+	func testShuffled() {
+		let array = Array(1...50)
+		let set = OrderedSet(array)
+		let shuffledSet = set.shuffled()
+		XCTAssertNotEqual(set, shuffledSet)
+	}
+	
 	//  func testMoving() {
 	//    let array = [1,2,3,4,5]
 	//    let set = OrderedSet(array)
