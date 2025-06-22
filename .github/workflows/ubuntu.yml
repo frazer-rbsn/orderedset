@@ -11,18 +11,16 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Install curl
-      run: sudo apt install -y curl
-    - name: Add Swift repo
-      run: curl -s https://archive.swiftlang.xyz/install.sh | sudo bash
-    - name: Install swift
-      run: sudo apt install swiftlang
+    - name: Setup Swift
+      uses: swift-actions/setup-swift@v2.3.0
+      with:
+        swift-version: 6.1.0
+
     - name: Build
       run: swift build -v
+
     - name: Run tests
       run: swift test -v
