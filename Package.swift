@@ -4,8 +4,8 @@ import PackageDescription
 let package = Package(
 	name: "orderedset",
 	platforms: [
-		.iOS(.v12),
-		.macOS(.v10_13)
+		.iOS(.v16),
+		.macOS(.v13)
 	],
 	products: [
 		.library(
