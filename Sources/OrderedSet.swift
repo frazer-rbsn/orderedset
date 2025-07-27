@@ -415,7 +415,7 @@
 	///   change when your program is compiled using a different version of
 	///   Swift.
 	/// - note: Documentation based on `Swift.Sequence.shuffled(using:_)`
-	public func shuffled<T>(using generator: inout T) -> Self where T: RandomNumberGenerator {
+	public func shuffled(using generator: inout some RandomNumberGenerator) -> Self {
 		Self(array: _set.shuffled(using: &generator), set: _set)
 	}
 

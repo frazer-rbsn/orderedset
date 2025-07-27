@@ -37,4 +37,5 @@
 --disable enumNamespaces
 --disable preferKeyPath
 --disable redundantSelf
+--disable redundantReturn
 --disable wrapMultilineStatementBraces

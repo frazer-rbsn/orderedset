@@ -81,11 +81,11 @@ final class InitialisationTests: XCTestCase {
 			let someValue: Int
 		}
 
-		func thisFunctionNeedsASendableType(_ x: Sendable) {
+		func thisFunctionNeedsASendableType(_: Sendable) {
 			print("Yes, this is sendable")
 		}
 
-		let array = (0...5).map { SomethingSendable.init(someValue: $0) }
+		let array = (0...5).map { SomethingSendable(someValue: $0) }
 		let x = OrderedSet(array)
 		// Using a function to check conformance at compile time as `Sendable` is a marker protocol
 		thisFunctionNeedsASendableType(x)
