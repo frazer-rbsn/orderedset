@@ -3,65 +3,76 @@ import XCTest
 
 final class MeasureTests: XCTestCase {
 
+	// MARK: - Data generators
+
 	static let smallMeasureCount = 10
-	static let largeMeasureCount = 100_000
-	nonisolated(unsafe) static var smallMeasureSet: OrderedSet<Int>!
-	nonisolated(unsafe) static var largeMeasureSet: OrderedSet<Int>!
+	static let largeMeasureCount = 1_000_000
 
-	nonisolated(unsafe) static var smallArray = [Int]()
-	nonisolated(unsafe) static var largeArray = [Int]()
-
-	override class func setUp() {
-		for n in 1...smallMeasureCount {
-			smallArray.append(n)
-		}
-		for n in 1...largeMeasureCount {
-			largeArray.append(n)
-		}
-		smallMeasureSet = OrderedSet(smallArray)
-		largeMeasureSet = OrderedSet(largeArray)
+	private func makeSmallArray() -> [Int] {
+		return Array(1...Self.smallMeasureCount)
 	}
 
+	private func makeLargeArray() -> [Int] {
+		return Array(1...Self.largeMeasureCount)
+	}
+
+	private func makeSmallOrderedSet() -> OrderedSet<Int> {
+		return OrderedSet(makeSmallArray())
+	}
+
+	private func makeLargeOrderedSet() -> OrderedSet<Int> {
+		return OrderedSet(makeLargeArray())
+	}
+
+	// MARK: - Tests
+
 	func testMeasureInitLargeArray() {
+		let largeArray = makeLargeArray()
 		measure {
-			_ = OrderedSet(Self.largeArray)
+			_ = OrderedSet(largeArray)
 		}
 	}
 
 	func testMeasureInitLargeArrayJson() throws {
-		let data = try JSONEncoder().encode(Self.largeArray)
+		let largeArray = makeLargeArray()
+		let data = try JSONEncoder().encode(largeArray)
 		measure {
 			_ = try! JSONDecoder().decode([Int].self, from: data)
 		}
 	}
 
 	func testMeasureContainsSmall() {
+		let smallOrderedSet = makeSmallOrderedSet()
 		measure {
-			_ = Self.smallMeasureSet.contains(9)
+			_ = smallOrderedSet.contains(9)
 		}
 	}
 
 	func testMeasureContainsLarge() {
+		let largeOrderedSet = makeLargeOrderedSet()
 		measure {
-			_ = Self.largeMeasureSet.contains(99999)
+			_ = largeOrderedSet.contains(99999)
 		}
 	}
 
 	func testMeasureIndexOfSmall() {
+		let smallOrderedSet = makeSmallOrderedSet()
 		measure {
-			_ = Self.smallMeasureSet.index(of: 9)
+			_ = smallOrderedSet.index(of: 9)
 		}
 	}
 
 	func testMeasureIndexOfLarge() {
+		let largeOrderedSet = makeLargeOrderedSet()
 		measure {
-			_ = Self.largeMeasureSet.index(of: 99999)
+			_ = largeOrderedSet.index(of: 99999)
 		}
 	}
 
 	func testMeasureCompactMapSmall() {
+		let smallOrderedSet = makeSmallOrderedSet()
 		measure {
-			let _: OrderedSet<Int> = Self.smallMeasureSet.compactMap {
+			let _: OrderedSet<Int> = smallOrderedSet.compactMap {
 				if $0.isMultiple(of: 10) {
 					return nil
 				} else {
@@ -72,8 +83,9 @@ final class MeasureTests: XCTestCase {
 	}
 
 	func testMeasureCompactMapLarge() {
+		let largeOrderedSet = makeLargeOrderedSet()
 		measure {
-			let _: OrderedSet<Int> = Self.largeMeasureSet.compactMap {
+			let _: OrderedSet<Int> = largeOrderedSet.compactMap {
 				if $0.isMultiple(of: 10) {
 					return nil
 				} else {
@@ -84,8 +96,9 @@ final class MeasureTests: XCTestCase {
 	}
 
 	func testMeasureCompactMapNoRetainOrderSmall() {
+		let smallOrderedSet = makeSmallOrderedSet()
 		measure {
-			let _: OrderedSet<Int> = Self.smallMeasureSet.compactMap({
+			let _: OrderedSet<Int> = smallOrderedSet.compactMap({
 				if $0.isMultiple(of: 10) {
 					return nil
 				} else {
@@ -96,8 +109,9 @@ final class MeasureTests: XCTestCase {
 	}
 
 	func testMeasureCompactMapNoRetainOrderLarge() {
+		let largeOrderedSet = makeLargeOrderedSet()
 		measure {
-			let _: OrderedSet<Int> = Self.largeMeasureSet.compactMap({
+			let _: OrderedSet<Int> = largeOrderedSet.compactMap({
 				if $0.isMultiple(of: 10) {
 					return nil
 				} else {
@@ -108,50 +122,58 @@ final class MeasureTests: XCTestCase {
 	}
 
 	func testMeasureAppendingSmall() {
+		let smallOrderedSet = makeSmallOrderedSet()
 		measure {
-			_ = Self.smallMeasureSet.appending(999_999)
+			_ = smallOrderedSet.appending(999_999)
 		}
 	}
 
 	func testMeasureAppendingLarge() {
+		let largeOrderedSet = makeLargeOrderedSet()
 		measure {
-			_ = Self.largeMeasureSet.appending(999_999)
+			_ = largeOrderedSet.appending(999_999)
 		}
 	}
 
 	func testMeasureRemovingSmall() {
+		let smallOrderedSet = makeSmallOrderedSet()
 		measure {
-			_ = Self.smallMeasureSet.removing(at: 6)
+			_ = smallOrderedSet.removing(at: 6)
 		}
 	}
 
 	func testMeasureRemovingLarge() {
+		let largeOrderedSet = makeLargeOrderedSet()
 		measure {
-			_ = Self.largeMeasureSet.removing(at: 6666)
+			_ = largeOrderedSet.removing(at: 6666)
 		}
 	}
 
 	func testMeasureRemovingFirstSmall() {
+		let smallOrderedSet = makeSmallOrderedSet()
 		measure {
-			_ = Self.smallMeasureSet.removingFirst()
+			_ = smallOrderedSet.removingFirst()
 		}
 	}
 
 	func testMeasureRemovingFirstLarge() {
+		let largeOrderedSet = makeLargeOrderedSet()
 		measure {
-			_ = Self.largeMeasureSet.removingFirst()
+			_ = largeOrderedSet.removingFirst()
 		}
 	}
 
 	func testMeasureSwappingAtSmall() {
+		let smallOrderedSet = makeSmallOrderedSet()
 		measure {
-			_ = Self.smallMeasureSet.swappingAt(2, 9)
+			_ = smallOrderedSet.swappingAt(2, 9)
 		}
 	}
 
 	func testMeasureSwappingAtLarge() {
+		let largeOrderedSet = makeLargeOrderedSet()
 		measure {
-			_ = Self.largeMeasureSet.swappingAt(2000, 9000)
+			_ = largeOrderedSet.swappingAt(2000, 9000)
 		}
 	}
 }
