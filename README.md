@@ -1,5 +1,5 @@
 # OrderedSet
-A static, ordered collection of unique objects.
+A static, ordered collection of unique elements.
 
 [![macOS](https://github.com/frazer-rbsn/OrderedSet/actions/workflows/macos.yml/badge.svg)](https://github.com/frazer-rbsn/OrderedSet/actions/workflows/macos.yml)
 [![Ubuntu](https://github.com/frazer-rbsn/OrderedSet/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/frazer-rbsn/OrderedSet/actions/workflows/ubuntu.yml)
