@@ -11,6 +11,10 @@ jobs:
     runs-on: macos-latest
 
     steps:
+    - uses: swift-actions/setup-swift@v2
+      with:
+        swift-version: "6.1.0"
+
     - uses: actions/checkout@v4
 
     - name: Print Swift version
