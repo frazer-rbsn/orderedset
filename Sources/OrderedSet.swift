@@ -1,6 +1,7 @@
-/// A static, ordered collection of unique objects.
-/// Available under the MIT License. https://mit-license.org
-/// - author: Frazer Robinson
+/// A static, ordered collection of unique elements.
+///
+/// @Comment Available under the [MIT License](https://mit-license.org)
+/// @Comment Author: Frazer Robinson
 @frozen public struct OrderedSet<E: Hashable> {
 
 	// MARK: - Typealiases
@@ -477,10 +478,12 @@
 
 public extension OrderedSet {
 
+	/// Returns a new ordered set with the elements both A and B, with the contents of B appended to the end of A.
 	static func + (lhs: Self, rhs: Self) -> Self {
 		Self(lhs._array + rhs._array)
 	}
 
+	/// Returns a new ordered set with the elements both A and B, with the contents of B appended to the end of A.
 	static func + <S>(lhs: Self, rhs: S) -> Self where Element == S.Element, S: Sequence {
 		Self(lhs._array + rhs)
 	}
